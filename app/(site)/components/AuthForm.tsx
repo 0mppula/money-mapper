@@ -56,7 +56,7 @@ const AuthForm = () => {
 
 			<hr />
 
-			<div className="flex gap-2">
+			<div className="flex gap-2 justify-center">
 				{variant === 'LOGIN' ? 'New to Money Mapper?' : 'Already have an account?'}
 
 				<button onClick={toggleVariant} className="underline cursor-pointer">
