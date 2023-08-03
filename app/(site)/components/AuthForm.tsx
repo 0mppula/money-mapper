@@ -2,9 +2,8 @@
 
 import { ButtonWithIcon } from '@/components/ButtonWithIcon';
 import { useToast } from '@/components/ui/use-toast';
-import { signIn, useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { signIn } from 'next-auth/react';
+import { useState } from 'react';
 import { FaGithub, FaGoogle } from 'react-icons/fa';
 
 const AuthForm = () => {
@@ -12,14 +11,6 @@ const AuthForm = () => {
 	const [githubIsLoading, setGithubIsLoading] = useState(false);
 
 	const { toast } = useToast();
-	const session = useSession();
-	const router = useRouter();
-
-	useEffect(() => {
-		if (session?.status === 'authenticated') {
-			router.push('/money');
-		}
-	}, [session?.status, router]);
 
 	const socialAction = async (provider: string) => {
 		if (provider === 'google') {
@@ -30,23 +21,13 @@ const AuthForm = () => {
 			setGithubIsLoading(true);
 		}
 
-		await signIn(provider, { callbackUrl: '/money' })
-			.then((callback) => {
-				if (callback?.error) {
-					toast({
-						description: 'Invalid credentials. Please try again.',
-					});
-				}
-			})
-			.finally(() => {
-				if (provider === 'google') {
-					setGoogleIsLoading(false);
-				}
-
-				if (provider === 'github') {
-					setGithubIsLoading(false);
-				}
-			});
+		await signIn(provider, { callbackUrl: '/money' }).then((callback) => {
+			if (callback?.error) {
+				toast({
+					description: 'Invalid credentials. Please try again.',
+				});
+			}
+		});
 	};
 
 	return (
