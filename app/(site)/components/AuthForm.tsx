@@ -1,37 +1,57 @@
 'use client';
 
 import { ButtonWithIcon } from '@/components/ButtonWithIcon';
-import { useCallback, useState } from 'react';
+import { useToast } from '@/components/ui/use-toast';
+import { signIn, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { FaGithub, FaGoogle } from 'react-icons/fa';
 
 const AuthForm = () => {
-	const [variant, setVariant] = useState<'LOGIN' | 'REGISTER'>('REGISTER');
 	const [googleIsLoading, setGoogleIsLoading] = useState(false);
 	const [githubIsLoading, setGithubIsLoading] = useState(false);
 
-	const toggleVariant = useCallback(() => {
-		if (variant === 'LOGIN') {
-			setVariant('REGISTER');
-		} else {
-			setVariant('LOGIN');
-		}
-	}, [variant]);
+	const { toast } = useToast();
+	const session = useSession();
+	const router = useRouter();
 
-	const socialAction = (provider: string) => {
+	useEffect(() => {
+		if (session?.status === 'authenticated') {
+			router.push('/money');
+		}
+	}, [session?.status, router]);
+
+	const socialAction = async (provider: string) => {
 		if (provider === 'google') {
 			setGoogleIsLoading(true);
-			console.log('google');
 		}
 
 		if (provider === 'github') {
 			setGithubIsLoading(true);
-			console.log('github');
 		}
+
+		await signIn(provider, { callbackUrl: '/money' })
+			.then((callback) => {
+				if (callback?.error) {
+					toast({
+						description: 'Invalid credentials. Please try again.',
+					});
+				}
+			})
+			.finally(() => {
+				if (provider === 'google') {
+					setGoogleIsLoading(false);
+				}
+
+				if (provider === 'github') {
+					setGithubIsLoading(false);
+				}
+			});
 	};
 
 	return (
 		<form
-			className="gap-4 flex flex-col mt-4 lg:mt-8 bg-white px-4 py-6 shadow rounded-lg sm:px-10 w-full sm:max-w-lg max-w-md"
+			className="gap-4 flex flex-col mt-4 lg:mt-8 px-4 py-6 sm:px-10 w-full sm:max-w-lg max-w-md rounded-xl border bg-card text-card-foreground shadow"
 			onSubmit={(e) => e.preventDefault()}
 		>
 			<ButtonWithIcon
@@ -40,7 +60,7 @@ const AuthForm = () => {
 				type="button"
 				className="w-full"
 				icon={FaGoogle}
-				label={variant === 'LOGIN' ? 'Continue with Google' : 'Create an account'}
+				label="Continue with Google"
 				onClick={() => socialAction('google')}
 			/>
 
@@ -50,19 +70,9 @@ const AuthForm = () => {
 				type="button"
 				className="w-full"
 				icon={FaGithub}
-				label={variant === 'LOGIN' ? 'Continue with Github' : 'Create an account'}
+				label="Continue with Github"
 				onClick={() => socialAction('github')}
 			/>
-
-			<hr />
-
-			<div className="flex gap-2 justify-center">
-				{variant === 'LOGIN' ? 'New to Money Mapper?' : 'Already have an account?'}
-
-				<button onClick={toggleVariant} className="underline cursor-pointer">
-					{variant === 'LOGIN' ? 'Create an account' : 'Login'}
-				</button>
-			</div>
 		</form>
 	);
 };
