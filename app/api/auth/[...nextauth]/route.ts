@@ -21,7 +21,6 @@ export const authOptions: AuthOptions = {
 	session: {
 		strategy: 'jwt',
 	},
-
 	callbacks: {
 		jwt: async ({ token }) => {
 			const db_user = await db.user.findFirst({
