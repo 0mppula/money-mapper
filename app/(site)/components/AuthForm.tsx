@@ -41,9 +41,10 @@ const AuthForm = () => {
 				type="button"
 				className="w-full"
 				icon={FaGoogle}
-				label="Continue with Google"
 				onClick={() => socialAction('google')}
-			/>
+			>
+				Continue with Google
+			</ButtonWithIcon>
 
 			<ButtonWithIcon
 				loading={githubIsLoading}
@@ -51,9 +52,10 @@ const AuthForm = () => {
 				type="button"
 				className="w-full"
 				icon={FaGithub}
-				label="Continue with Github"
 				onClick={() => socialAction('github')}
-			/>
+			>
+				Continue with Github
+			</ButtonWithIcon>
 		</form>
 	);
 };

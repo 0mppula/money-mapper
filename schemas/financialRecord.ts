@@ -1,9 +1,10 @@
 import { z } from 'zod';
 
-export const formSchema = z.object({
-	date: z.date({
-		required_error: 'Please pick a date for this record',
-	}),
+export const creationSchema = z.object({
+	date: z
+		.string({ required_error: 'Please pick a date for this record' })
+		.or(z.date({ required_error: 'Please pick a date for this record' }))
+		.transform((arg) => new Date(arg)),
 	currency: z
 		.string({
 			required_error: 'Please pick a currency for this record',
