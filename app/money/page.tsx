@@ -3,19 +3,40 @@ import { TypographyH1 } from '@/components/TypographyH1';
 import { mainAppDescription } from '@/constants';
 import createAppTitle from '@/utils/createAppTitle';
 import { Metadata } from 'next';
-import CreateFinancialRecordFrom from './components/CreateFinancialRecordFrom';
+import { headers } from 'next/headers';
+import { columns } from './components/Columns';
+import { FinancialRecordTable } from './components/FinancialRecordTable';
+import CreateFinancialRecordForm from './components/CreateFinancialRecordForm';
 
 export const metadata: Metadata = {
 	title: createAppTitle('Money'),
 	description: mainAppDescription,
 };
 
-const Page = () => {
+const Page = async () => {
+	const getFinancialRecords = async () => {
+		try {
+			const response = await fetch('http://localhost:3000/api/financial-records', {
+				method: 'GET',
+				headers: headers(),
+			});
+			const data = await response.json();
+
+			return data.data;
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const records = await getFinancialRecords();
+
 	return (
 		<PageContainer>
 			<TypographyH1 center>Money</TypographyH1>
 
-			<CreateFinancialRecordFrom />
+			<CreateFinancialRecordForm />
+
+			<FinancialRecordTable columns={columns} data={records} />
 		</PageContainer>
 	);
 };

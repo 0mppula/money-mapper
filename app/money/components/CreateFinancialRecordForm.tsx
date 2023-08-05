@@ -40,9 +40,9 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-interface CreateFinancialRecordFromProps {}
+interface CreateFinancialRecordFormProps {}
 
-const CreateFinancialRecordFrom = ({}: CreateFinancialRecordFromProps) => {
+const CreateFinancialRecordForm = ({}: CreateFinancialRecordFormProps) => {
 	const [formIsOpen, setFormIsOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -72,7 +72,6 @@ const CreateFinancialRecordFrom = ({}: CreateFinancialRecordFromProps) => {
 				});
 
 				setFormIsOpen(false);
-				console.log(res.data);
 			})
 			.catch((err) => {
 				toast({
@@ -294,4 +293,4 @@ const CreateFinancialRecordFrom = ({}: CreateFinancialRecordFromProps) => {
 	);
 };
 
-export default CreateFinancialRecordFrom;
+export default CreateFinancialRecordForm;
