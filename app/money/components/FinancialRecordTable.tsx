@@ -8,6 +8,7 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
+import { cn } from '@/lib/utils';
 import { creationSchema } from '@/schemas/financialRecord';
 import { FinancialRecord } from '@prisma/client';
 import { useQuery } from '@tanstack/react-query';
@@ -75,12 +76,10 @@ export function FinancialRecordTable<TData, TValue>({
 				return '!w-[128px] !min-w-[96px]';
 			case 'debt':
 				return '!w-[128px] !min-w-[96px]';
-			case 'actions':
-				return '!w-[56px]';
 			case 'netWorth':
 				return '!w-[144px] !min-w-[144px]';
 			default:
-				return 'auto';
+				return '!w-[56px] !min-w-[56px]';
 		}
 	};
 
@@ -92,7 +91,19 @@ export function FinancialRecordTable<TData, TValue>({
 						<TableRow key={headerGroup.id}>
 							{headerGroup.headers.map((header) => {
 								return (
-									<TableHead key={header.id} className="p-0">
+									<TableHead
+										key={header.id}
+										className={cn(
+											getColWidthStyles(
+												header.column.id as keyof (z.infer<
+													typeof creationSchema
+												> & {
+													actions: string;
+												})
+											),
+											'p-0'
+										)}
+									>
 										{header.isPlaceholder
 											? null
 											: flexRender(
@@ -111,14 +122,7 @@ export function FinancialRecordTable<TData, TValue>({
 							<TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
 								{row.getVisibleCells().map((cell) => {
 									return (
-										<TableCell
-											key={cell.id}
-											className={getColWidthStyles(
-												cell.column.id as keyof (z.infer<
-													typeof creationSchema
-												> & { actions: string })
-											)}
-										>
+										<TableCell key={cell.id}>
 											{flexRender(
 												cell.column.columnDef.cell,
 												cell.getContext()
