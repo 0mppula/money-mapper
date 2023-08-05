@@ -78,7 +78,7 @@ export function FinancialRecordTable<TData, TValue>({
 			case 'actions':
 				return '!w-[56px]';
 			case 'netWorth':
-				return '!w-[160px] !min-w-[160px]';
+				return '!w-[144px] !min-w-[144px]';
 			default:
 				return 'auto';
 		}
