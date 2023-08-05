@@ -13,21 +13,21 @@ export const metadata: Metadata = {
 	description: mainAppDescription,
 };
 
+const getFinancialRecords = async () => {
+	try {
+		const response = await fetch(`${process.env.BASE_URL}/api/financial-records`, {
+			method: 'GET',
+			headers: headers(),
+		});
+		const data = await response.json();
+
+		return data.data;
+	} catch (err) {
+		console.log(err);
+	}
+};
+
 const Page = async () => {
-	const getFinancialRecords = async () => {
-		try {
-			const response = await fetch(`${process.env.BASE_URL}/api/financial-records`, {
-				method: 'GET',
-				headers: headers(),
-			});
-			const data = await response.json();
-
-			return data.data;
-		} catch (err) {
-			console.log(err);
-		}
-	};
-
 	const records = (await getFinancialRecords()) || [];
 
 	return (
