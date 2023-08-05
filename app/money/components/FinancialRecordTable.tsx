@@ -111,7 +111,7 @@ export function FinancialRecordTable<TData, TValue>({
 						))
 					) : (
 						<TableRow>
-							<TableCell colSpan={columns.length} className="h-24 text-center">
+							<TableCell colSpan={columns?.length} className="h-24 text-center">
 								You dont have any financial records yet. Create one! 📈
 							</TableCell>
 						</TableRow>
