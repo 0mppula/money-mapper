@@ -1,12 +1,12 @@
 import Nav from '@/components/Nav/Nav';
 import NextSessionProvider from '@/components/providers/NextSessionProvider';
+import { Toaster } from '@/components/ui/toaster';
 import { mainAppDescription } from '@/constants';
 import { cn } from '@/lib/utils';
 import createAppTitle from '@/utils/createAppTitle';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { Toaster } from '@/components/ui/toaster';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {

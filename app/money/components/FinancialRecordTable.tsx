@@ -9,6 +9,7 @@ import {
 	TableRow,
 } from '@/components/ui/table';
 import { creationSchema } from '@/schemas/financialRecord';
+import { useQuery } from '@tanstack/react-query';
 import {
 	ColumnDef,
 	SortingState,
@@ -17,19 +18,35 @@ import {
 	getSortedRowModel,
 	useReactTable,
 } from '@tanstack/react-table';
+import axios from 'axios';
 import { useState } from 'react';
 import { z } from 'zod';
 
+const getFinancialRecords = async () => {
+	try {
+		const response = await axios.get(`/api/financial-records`);
+
+		const data = await response.data;
+
+		return data.data;
+	} catch (err) {
+		console.log(err);
+	}
+};
+
 interface FinancialRecordTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
-	data: TData[];
 }
 
 export function FinancialRecordTable<TData, TValue>({
 	columns,
-	data,
 }: FinancialRecordTableProps<TData, TValue>) {
 	const [sorting, setSorting] = useState<SortingState>([]);
+
+	const { data, isLoading, isError } = useQuery({
+		queryKey: ['todos'],
+		queryFn: getFinancialRecords,
+	});
 
 	const table = useReactTable({
 		data,
@@ -87,7 +104,7 @@ export function FinancialRecordTable<TData, TValue>({
 					))}
 				</TableHeader>
 				<TableBody>
-					{table.getRowModel().rows?.length ? (
+					{!isLoading && table.getRowModel()?.rows?.length ? (
 						table.getRowModel().rows.map((row) => (
 							<TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
 								{row.getVisibleCells().map((cell) => {
@@ -112,7 +129,11 @@ export function FinancialRecordTable<TData, TValue>({
 					) : (
 						<TableRow>
 							<TableCell colSpan={columns?.length} className="h-24 text-center">
-								You dont have any financial records yet. Create one! 📈
+								{isLoading
+									? 'Loading...'
+									: isError
+									? 'Error loading financial records.'
+									: 'You dont have any financial records yet. Create one! 📈'}
 							</TableCell>
 						</TableRow>
 					)}

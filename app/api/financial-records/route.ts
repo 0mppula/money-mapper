@@ -1,13 +1,12 @@
 import { getAuthSession } from '@/app/actions/auth';
 import db from '@/lib/db';
 import { creationSchema } from '@/schemas/financialRecord';
-import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
 import { ZodError } from 'zod';
 
 export const GET = async (req: Request) => {
 	try {
-		const session = await getServerSession();
+		const session = await getAuthSession();
 
 		if (!session) {
 			return NextResponse.json({ error: 'Not logged in' }, { status: 401 });
@@ -27,8 +26,6 @@ export const POST = async (req: Request) => {
 	try {
 		const body = await req.json();
 		const session = await getAuthSession();
-
-		console.log(session);
 
 		if (!session) return NextResponse.error();
 
