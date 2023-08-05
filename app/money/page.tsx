@@ -28,7 +28,7 @@ const Page = async () => {
 		}
 	};
 
-	const records = await getFinancialRecords();
+	const records = (await getFinancialRecords()) || [];
 
 	return (
 		<PageContainer>
