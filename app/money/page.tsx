@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 const Page = async () => {
 	const getFinancialRecords = async () => {
 		try {
-			const response = await fetch('http://localhost:3000/api/financial-records', {
+			const response = await fetch(`${process.env.BASE_URL}/api/financial-records`, {
 				method: 'GET',
 				headers: headers(),
 			});
