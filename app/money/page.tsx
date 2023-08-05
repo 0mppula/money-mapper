@@ -34,6 +34,8 @@ const Page = async () => {
 		<PageContainer>
 			<TypographyH1 center>Money</TypographyH1>
 
+			<pre>{JSON.stringify(records)} </pre>
+
 			<CreateFinancialRecordForm />
 
 			<FinancialRecordTable columns={columns} data={records} />
