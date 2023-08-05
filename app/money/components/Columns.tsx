@@ -158,7 +158,9 @@ export const columns: ColumnDef<z.infer<typeof creationSchema> & { id: string }>
 	},
 	{
 		id: 'actions',
-		cell: () => {
+		cell: ({ row }) => {
+			const financialRecord = row.original;
+
 			return (
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>

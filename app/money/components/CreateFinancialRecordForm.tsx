@@ -30,6 +30,7 @@ import {
 } from '@/components/ui/select';
 import { useToast } from '@/components/ui/use-toast';
 import { currencies } from '@/data/currencies';
+import useCreateFinancialRecordModal from '@/hooks/useCreateFinancialRecordModal';
 import { cn } from '@/lib/utils';
 import { creationSchema } from '@/schemas/financialRecord';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -42,10 +43,10 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 const CreateFinancialRecordForm = () => {
-	const [formIsOpen, setFormIsOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const { toast } = useToast();
+	const createFinancialRecordModal = useCreateFinancialRecordModal();
 	const queryClient = useQueryClient();
 
 	const createFinancialRecord = async (values: z.infer<typeof creationSchema>) => {
@@ -73,7 +74,7 @@ const CreateFinancialRecordForm = () => {
 		},
 		onSettled: () => {
 			setIsLoading(false);
-			setFormIsOpen(false);
+			createFinancialRecordModal.setIsOpen(false);
 		},
 	});
 
@@ -96,7 +97,10 @@ const CreateFinancialRecordForm = () => {
 
 	return (
 		<div className="mt-4 lg:mt-8 flex flex-col">
-			<Dialog open={formIsOpen} onOpenChange={() => setFormIsOpen((prev) => !prev)}>
+			<Dialog
+				open={createFinancialRecordModal.isOpen}
+				onOpenChange={() => createFinancialRecordModal.setIsOpen((prev) => !prev)}
+			>
 				<DialogTrigger asChild>
 					<Button className="place-self-end">Add record</Button>
 				</DialogTrigger>
