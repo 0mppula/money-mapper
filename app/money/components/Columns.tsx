@@ -15,7 +15,9 @@ import { format } from 'date-fns';
 import { Edit2, MoreHorizontal, Trash2 } from 'lucide-react';
 import { z } from 'zod';
 
-export const columns: ColumnDef<z.infer<typeof creationSchema> & { id: string }>[] = [
+export const columns: ColumnDef<
+	z.infer<typeof creationSchema> & { id: string; netWorth: number }
+>[] = [
 	{
 		accessorKey: 'date',
 		header: ({ column }) => {
@@ -154,6 +156,33 @@ export const columns: ColumnDef<z.infer<typeof creationSchema> & { id: string }>
 			}).format(amount);
 
 			return <div>{formatted}</div>;
+		},
+	},
+	{
+		accessorKey: 'netWorth',
+		header: ({ column }) => {
+			return (
+				<Button
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+				>
+					Net Worth
+					<CaretSortIcon className="ml-2 h-4 w-4" />
+				</Button>
+			);
+		},
+		cell: ({ row }) => {
+			const currency = row.original.currency;
+			const amount = parseFloat(row.getValue('netWorth'));
+			const red = 'text-red-500';
+			const green = 'text-green-500';
+
+			const formatted = new Intl.NumberFormat(getCurrencyLocale(currency), {
+				style: 'currency',
+				currency: currency,
+			}).format(amount);
+
+			return <div className={amount > 0 ? green : amount !== 0 ? red : ''}>{formatted}</div>;
 		},
 	},
 	{

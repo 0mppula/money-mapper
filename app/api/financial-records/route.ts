@@ -1,6 +1,7 @@
 import { getAuthSession } from '@/app/actions/auth';
 import db from '@/lib/db';
 import { creationSchema } from '@/schemas/financialRecord';
+import { FinancialRecord } from '@prisma/client';
 import { NextResponse } from 'next/server';
 import { ZodError } from 'zod';
 
@@ -16,7 +17,13 @@ export const GET = async (req: Request) => {
 			where: { userId: session?.user.id },
 		});
 
-		return NextResponse.json({ data: financialRecords });
+		const financialRecordsWithNetWorth: (FinancialRecord & { netWorth: number })[] =
+			financialRecords.map((collection) => {
+				const netWorth = collection.assetsExCash + collection.cash - collection.debt;
+				return { ...collection, netWorth };
+			});
+
+		return NextResponse.json({ data: financialRecordsWithNetWorth });
 	} catch (error) {
 		NextResponse.json({ error: 'Something went wrong' }, { status: 500 });
 	}

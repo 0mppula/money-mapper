@@ -21,7 +21,7 @@ import {
 } from '@tanstack/react-table';
 import axios from 'axios';
 import { useState } from 'react';
-import { z } from 'zod';
+import { number, z } from 'zod';
 
 const getFinancialRecords = async () => {
 	try {
@@ -43,7 +43,7 @@ export function FinancialRecordTable<TData, TValue>({
 }: FinancialRecordTableProps<TData, TValue>) {
 	const [sorting, setSorting] = useState<SortingState>([]);
 
-	const { data, isLoading, isError } = useQuery<FinancialRecord[]>({
+	const { data, isLoading, isError } = useQuery<(FinancialRecord & { netWorth: number })[]>({
 		queryKey: ['financial-records'],
 		queryFn: getFinancialRecords,
 	});
@@ -60,7 +60,7 @@ export function FinancialRecordTable<TData, TValue>({
 	});
 
 	const getColWidthStyles = (
-		columnId: keyof (z.infer<typeof creationSchema> & { actions: string })
+		columnId: keyof (z.infer<typeof creationSchema> & { actions: string; netWorth: string })
 	) => {
 		switch (columnId) {
 			case 'date':
@@ -77,6 +77,8 @@ export function FinancialRecordTable<TData, TValue>({
 				return '!w-[128px] !min-w-[96px]';
 			case 'actions':
 				return '!w-[56px]';
+			case 'netWorth':
+				return '!w-[160px] !min-w-[160px]';
 			default:
 				return 'auto';
 		}
