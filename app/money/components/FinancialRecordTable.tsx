@@ -8,6 +8,7 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
+import { creationSchema } from '@/schemas/financialRecord';
 import {
 	ColumnDef,
 	SortingState,
@@ -16,8 +17,8 @@ import {
 	getSortedRowModel,
 	useReactTable,
 } from '@tanstack/react-table';
-
 import { useState } from 'react';
+import { z } from 'zod';
 
 interface FinancialRecordTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -41,6 +42,29 @@ export function FinancialRecordTable<TData, TValue>({
 		},
 	});
 
+	const getColWidthStyles = (
+		columnId: keyof (z.infer<typeof creationSchema> & { actions: string })
+	) => {
+		switch (columnId) {
+			case 'date':
+				return '!w-[128px] !min-w-[112px]';
+			case 'grossIncomeYtd':
+				return '!w-[180px] !min-w-[192px]';
+			case 'taxesPaidYtd':
+				return '!w-[160px] !min-w-[176px]';
+			case 'assetsExCash':
+				return '!w-[160px] !min-w-[160px]';
+			case 'cash':
+				return '!w-[128px] !min-w-[96px]';
+			case 'debt':
+				return '!w-[128px] !min-w-[96px]';
+			case 'actions':
+				return '!w-[56px]';
+			default:
+				return 'auto';
+		}
+	};
+
 	return (
 		<div className="rounded-md border mt-4">
 			<Table>
@@ -49,7 +73,7 @@ export function FinancialRecordTable<TData, TValue>({
 						<TableRow key={headerGroup.id}>
 							{headerGroup.headers.map((header) => {
 								return (
-									<TableHead key={header.id}>
+									<TableHead key={header.id} className="p-0">
 										{header.isPlaceholder
 											? null
 											: flexRender(
@@ -70,7 +94,11 @@ export function FinancialRecordTable<TData, TValue>({
 									return (
 										<TableCell
 											key={cell.id}
-											className={cell.column.id === 'actions' ? 'w-16' : ''}
+											className={getColWidthStyles(
+												cell.column.id as keyof (z.infer<
+													typeof creationSchema
+												> & { actions: string })
+											)}
 										>
 											{flexRender(
 												cell.column.columnDef.cell,
@@ -84,7 +112,7 @@ export function FinancialRecordTable<TData, TValue>({
 					) : (
 						<TableRow>
 							<TableCell colSpan={columns.length} className="h-24 text-center">
-								No results.
+								You dont have any financial records yet. Create one! 📈
 							</TableCell>
 						</TableRow>
 					)}

@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { creationSchema } from '@/schemas/financialRecord';
 import { getCurrencyLocale } from '@/utils/currencyFns';
+import { CaretSortIcon } from '@radix-ui/react-icons';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { ArrowUpDown, Edit2, MoreHorizontal, Trash2 } from 'lucide-react';
@@ -24,7 +25,7 @@ export const columns: ColumnDef<z.infer<typeof creationSchema> & { id: string }>
 					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
 				>
 					Date
-					<ArrowUpDown className="ml-2 h-4 w-4" />
+					<CaretSortIcon className="ml-2 h-4 w-4" />
 				</Button>
 			);
 		},
@@ -34,6 +35,7 @@ export const columns: ColumnDef<z.infer<typeof creationSchema> & { id: string }>
 
 			return <div>{formatted}</div>;
 		},
+		maxSize: 50,
 	},
 	{
 		accessorKey: 'grossIncomeYtd',
@@ -44,7 +46,7 @@ export const columns: ColumnDef<z.infer<typeof creationSchema> & { id: string }>
 					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
 				>
 					Gross Income YTD
-					<ArrowUpDown className="ml-2 h-4 w-4" />
+					<CaretSortIcon className="ml-2 h-4 w-4" />
 				</Button>
 			);
 		},
@@ -68,7 +70,7 @@ export const columns: ColumnDef<z.infer<typeof creationSchema> & { id: string }>
 					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
 				>
 					Taxes Paid YTD
-					<ArrowUpDown className="ml-2 h-4 w-4" />
+					<CaretSortIcon className="ml-2 !h-4 !w-4" />
 				</Button>
 			);
 		},
@@ -92,7 +94,7 @@ export const columns: ColumnDef<z.infer<typeof creationSchema> & { id: string }>
 					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
 				>
 					Assets Ex Cash
-					<ArrowUpDown className="ml-2 h-4 w-4" />
+					<CaretSortIcon className="ml-2 h-4 w-4" />
 				</Button>
 			);
 		},
@@ -116,7 +118,7 @@ export const columns: ColumnDef<z.infer<typeof creationSchema> & { id: string }>
 					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
 				>
 					Cash
-					<ArrowUpDown className="ml-2 h-4 w-4" />
+					<CaretSortIcon className="ml-2 h-4 w-4" />
 				</Button>
 			);
 		},
@@ -140,7 +142,7 @@ export const columns: ColumnDef<z.infer<typeof creationSchema> & { id: string }>
 					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
 				>
 					Debt
-					<ArrowUpDown className="ml-2 h-4 w-4" />
+					<CaretSortIcon className="ml-2 h-4 w-4" />
 				</Button>
 			);
 		},
