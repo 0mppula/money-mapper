@@ -35,7 +35,6 @@ export const columns: ColumnDef<z.infer<typeof creationSchema> & { id: string }>
 
 			return <div>{formatted}</div>;
 		},
-		maxSize: 50,
 	},
 	{
 		accessorKey: 'grossIncomeYtd',
@@ -159,13 +158,11 @@ export const columns: ColumnDef<z.infer<typeof creationSchema> & { id: string }>
 	},
 	{
 		id: 'actions',
-		enableHiding: false,
 		cell: () => {
 			return (
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
-						<Button variant="ghost" className="h-8 w-8 p-0">
-							<span className="sr-only">Open menu</span>
+						<Button variant="ghost" className="h-8 w-8 p-0" title="Open menu">
 							<MoreHorizontal className="h-4 w-4" />
 						</Button>
 					</DropdownMenuTrigger>
