@@ -33,6 +33,7 @@ import { currencies } from '@/data/currencies';
 import { cn } from '@/lib/utils';
 import { creationSchema } from '@/schemas/financialRecord';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { format, isToday } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
@@ -40,13 +41,41 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-interface CreateFinancialRecordFormProps {}
-
-const CreateFinancialRecordForm = ({}: CreateFinancialRecordFormProps) => {
+const CreateFinancialRecordForm = () => {
 	const [formIsOpen, setFormIsOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const { toast } = useToast();
+	const queryClient = useQueryClient();
+
+	const createFinancialRecord = async (values: z.infer<typeof creationSchema>) => {
+		await axios.post('/api/financial-records', values);
+	};
+
+	const mutation = useMutation({
+		mutationFn: createFinancialRecord,
+		onMutate: async (values) => {
+			setIsLoading(true);
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['financial-records'] });
+
+			toast({
+				description: 'Record added successfully.',
+			});
+		},
+		onError: () => {
+			toast({
+				description:
+					'Something went wrong while adding the record. Please try again later.',
+				variant: 'destructive',
+			});
+		},
+		onSettled: () => {
+			setIsLoading(false);
+			setFormIsOpen(false);
+		},
+	});
 
 	const form = useForm<z.infer<typeof creationSchema>>({
 		resolver: zodResolver(creationSchema),
@@ -62,27 +91,7 @@ const CreateFinancialRecordForm = ({}: CreateFinancialRecordFormProps) => {
 	});
 
 	const onSubmit = async (values: z.infer<typeof creationSchema>) => {
-		setIsLoading(true);
-
-		await axios
-			.post('/api/financial-records', values)
-			.then((res) => {
-				toast({
-					description: 'Record added successfully.',
-				});
-
-				setFormIsOpen(false);
-			})
-			.catch((err) => {
-				toast({
-					description:
-						'Something went wrong while adding the record. Please try again later.',
-					variant: 'destructive',
-				});
-			})
-			.finally(() => {
-				setIsLoading(false);
-			});
+		mutation.mutate(values);
 	};
 
 	return (

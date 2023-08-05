@@ -12,7 +12,7 @@ import { getCurrencyLocale } from '@/utils/currencyFns';
 import { CaretSortIcon } from '@radix-ui/react-icons';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { ArrowUpDown, Edit2, MoreHorizontal, Trash2 } from 'lucide-react';
+import { Edit2, MoreHorizontal, Trash2 } from 'lucide-react';
 import { z } from 'zod';
 
 export const columns: ColumnDef<z.infer<typeof creationSchema> & { id: string }>[] = [

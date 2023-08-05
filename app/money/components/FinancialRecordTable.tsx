@@ -25,7 +25,6 @@ import { z } from 'zod';
 const getFinancialRecords = async () => {
 	try {
 		const response = await axios.get(`/api/financial-records`);
-
 		const data = await response.data;
 
 		return data.data;
@@ -44,7 +43,7 @@ export function FinancialRecordTable<TData, TValue>({
 	const [sorting, setSorting] = useState<SortingState>([]);
 
 	const { data, isLoading, isError } = useQuery({
-		queryKey: ['todos'],
+		queryKey: ['financial-records'],
 		queryFn: getFinancialRecords,
 	});
 
