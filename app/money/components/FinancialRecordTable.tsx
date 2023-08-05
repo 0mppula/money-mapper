@@ -9,6 +9,7 @@ import {
 	TableRow,
 } from '@/components/ui/table';
 import { creationSchema } from '@/schemas/financialRecord';
+import { FinancialRecord } from '@prisma/client';
 import { useQuery } from '@tanstack/react-query';
 import {
 	ColumnDef,
@@ -42,13 +43,13 @@ export function FinancialRecordTable<TData, TValue>({
 }: FinancialRecordTableProps<TData, TValue>) {
 	const [sorting, setSorting] = useState<SortingState>([]);
 
-	const { data, isLoading, isError } = useQuery({
+	const { data, isLoading, isError } = useQuery<FinancialRecord[]>({
 		queryKey: ['financial-records'],
 		queryFn: getFinancialRecords,
 	});
 
 	const table = useReactTable({
-		data,
+		data: (data || []) as TData[],
 		columns,
 		getCoreRowModel: getCoreRowModel(),
 		onSortingChange: setSorting,
