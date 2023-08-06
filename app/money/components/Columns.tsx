@@ -1,18 +1,11 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { creationSchema } from '@/schemas/financialRecord';
 import { getCurrencyLocale } from '@/utils/currencyFns';
 import { CaretSortIcon } from '@radix-ui/react-icons';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { Edit2, MoreHorizontal, Trash2 } from 'lucide-react';
 import { z } from 'zod';
 import FinancialRecordControls from './FinancialRecordControls';
 
@@ -189,9 +182,11 @@ export const columns: ColumnDef<
 	{
 		id: 'actions',
 		cell: ({ row }) => {
-			const financialRecord = row.original;
+			const { netWorth, id, ...financialRecord } = row.original;
 
-			return <FinancialRecordControls financialRecord={financialRecord} />;
+			return (
+				<FinancialRecordControls financialRecordId={id} financialRecord={financialRecord} />
+			);
 		},
 	},
 ];

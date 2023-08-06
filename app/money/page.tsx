@@ -7,6 +7,7 @@ import { columns } from './components/Columns';
 import CreateFinancialRecordForm from './components/CreateFinancialRecordForm';
 import { FinancialRecordTable } from './components/FinancialRecordTable';
 import FinancialRecordDeleteModal from '@/components/Modals/FinancialRecordDeleteModal';
+import EditFinancialRecordForm from '@/components/Modals/EditFinancialRecordForm';
 
 export const metadata: Metadata = {
 	title: createAppTitle('Money'),
@@ -21,6 +22,7 @@ const Page = async () => {
 			<FinancialRecordDeleteModal />
 
 			<CreateFinancialRecordForm />
+			<EditFinancialRecordForm />
 
 			<FinancialRecordTable columns={columns} />
 		</PageContainer>

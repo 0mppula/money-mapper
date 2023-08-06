@@ -36,7 +36,7 @@ export function FinancialRecordTable<TData, TValue>({
 
 	const getFinancialRecords = async () => {
 		try {
-			const response = await axios.get(`/api/financial-recordss`);
+			const response = await axios.get(`/api/financial-records`);
 			const data = await response.data;
 
 			return data.data;

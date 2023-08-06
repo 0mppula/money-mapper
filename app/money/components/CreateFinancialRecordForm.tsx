@@ -77,6 +77,9 @@ const CreateFinancialRecordForm = () => {
 			toast({
 				description: 'Record added successfully.',
 			});
+
+			form.reset();
+			createFinancialRecordModal.setIsOpen(false);
 		},
 		onError: () => {
 			toast({
@@ -87,20 +90,17 @@ const CreateFinancialRecordForm = () => {
 		},
 		onSettled: () => {
 			setIsLoading(false);
-			createFinancialRecordModal.setIsOpen(false);
-			form.reset();
 		},
 	});
-
-	const onSubmit = async (values: z.infer<typeof creationSchema>) => {
-		mutation.mutate(values);
-	};
 
 	return (
 		<div className="mt-4 lg:mt-8 flex flex-col">
 			<Dialog
 				open={createFinancialRecordModal.isOpen}
-				onOpenChange={() => createFinancialRecordModal.setIsOpen((prev) => !prev)}
+				onOpenChange={() => {
+					form.reset();
+					createFinancialRecordModal.setIsOpen((prev) => !prev);
+				}}
 			>
 				<DialogTrigger asChild>
 					<Button className="place-self-end">Add record</Button>
@@ -112,7 +112,10 @@ const CreateFinancialRecordForm = () => {
 					</DialogHeader>
 
 					<Form {...form}>
-						<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+						<form
+							onSubmit={form.handleSubmit((values) => mutation.mutate(values))}
+							className="space-y-4"
+						>
 							<div className="flex flex-col sm:flex-row gap-4">
 								{/* Date field */}
 								<FormField

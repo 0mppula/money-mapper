@@ -15,16 +15,26 @@ import { useCallback } from 'react';
 import { z } from 'zod';
 
 interface FinancialRecordControlsProps {
-	financialRecord: z.infer<typeof creationSchema> & { id: string; netWorth: number };
+	financialRecordId: string;
+	financialRecord: z.infer<typeof creationSchema>;
 }
 
-const FinancialRecordControls = ({ financialRecord }: FinancialRecordControlsProps) => {
+const FinancialRecordControls = ({
+	financialRecord,
+	financialRecordId,
+}: FinancialRecordControlsProps) => {
 	const editFinancialRecordModal = useEditFinancialRecordModal();
 	const deleteFinancialRecordModal = useDeleteFinancialRecordModal();
 
+	const handleEdit = useCallback(() => {
+		editFinancialRecordModal.setIsOpen(true);
+		editFinancialRecordModal.setEditedRecordId(financialRecordId);
+		editFinancialRecordModal.setEditedRecord(financialRecord);
+	}, [editFinancialRecordModal, financialRecord]);
+
 	const handleDelete = useCallback(() => {
 		deleteFinancialRecordModal.setIsOpen(true);
-		deleteFinancialRecordModal.setDeletedRecordId(financialRecord.id);
+		deleteFinancialRecordModal.setDeletedRecordId(financialRecordId);
 	}, [deleteFinancialRecordModal]);
 
 	return (
@@ -37,10 +47,7 @@ const FinancialRecordControls = ({ financialRecord }: FinancialRecordControlsPro
 				</DropdownMenuTrigger>
 
 				<DropdownMenuContent align="end">
-					<DropdownMenuItem
-						className="flex gap-2"
-						onClick={() => editFinancialRecordModal.setIsOpen(true)}
-					>
+					<DropdownMenuItem className="flex gap-2" onClick={handleEdit}>
 						<Edit2 className="h-[1.125rem] w-[1.125rem]" />
 						<span>Edit</span>
 					</DropdownMenuItem>
