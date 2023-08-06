@@ -10,7 +10,7 @@ import { z } from 'zod';
 import FinancialRecordControls from './FinancialRecordControls';
 
 export const columns: ColumnDef<
-	z.infer<typeof creationSchema> & { id: string; netWorth: number }
+	z.infer<typeof creationSchema> & { id: string; netWorth: number; totalAssets: number }
 >[] = [
 	{
 		accessorKey: 'date',
@@ -125,6 +125,31 @@ export const columns: ColumnDef<
 		cell: ({ row }) => {
 			const currency = row.original.currency;
 			const amount = parseFloat(row.getValue('cash'));
+			const formatted = new Intl.NumberFormat(getCurrencyLocale(currency), {
+				style: 'currency',
+				currency: currency,
+			}).format(amount);
+
+			return <div>{formatted}</div>;
+		},
+	},
+	{
+		accessorKey: 'totalAssets',
+		header: ({ column }) => {
+			return (
+				<Button
+					className="p-2 my-1"
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+				>
+					Total Assets
+					<CaretSortIcon className="ml-2 h-4 w-4" />
+				</Button>
+			);
+		},
+		cell: ({ row }) => {
+			const currency = row.original.currency;
+			const amount = parseFloat(row.getValue('totalAssets'));
 			const formatted = new Intl.NumberFormat(getCurrencyLocale(currency), {
 				style: 'currency',
 				currency: currency,

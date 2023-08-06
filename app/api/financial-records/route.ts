@@ -15,12 +15,14 @@ export const GET = async (req: Request) => {
 
 		const financialRecords = await db.financialRecord.findMany({
 			where: { userId: session?.user.id },
+			orderBy: { date: 'asc' },
 		});
 
 		const financialRecordsWithNetWorth: (FinancialRecord & { netWorth: number })[] =
 			financialRecords.map((collection) => {
 				const netWorth = collection.assetsExCash + collection.cash - collection.debt;
-				return { ...collection, netWorth };
+				const totalAssets = collection.assetsExCash + collection.cash;
+				return { ...collection, totalAssets, netWorth };
 			});
 
 		return NextResponse.json({ data: financialRecordsWithNetWorth });

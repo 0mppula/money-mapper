@@ -25,6 +25,20 @@ import axios from 'axios';
 import { useState } from 'react';
 import { z } from 'zod';
 
+export const getFinancialRecords = async () => {
+	try {
+		const response = await axios.get(`/api/financial-records`);
+		const data = await response.data;
+
+		return data.data;
+	} catch (err) {
+		toast({
+			variant: 'destructive',
+			description: 'Something went wrong while fetching the records. Please try again later.',
+		});
+	}
+};
+
 interface FinancialRecordTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 }
@@ -34,22 +48,9 @@ export function FinancialRecordTable<TData, TValue>({
 }: FinancialRecordTableProps<TData, TValue>) {
 	const [sorting, setSorting] = useState<SortingState>([]);
 
-	const getFinancialRecords = async () => {
-		try {
-			const response = await axios.get(`/api/financial-records`);
-			const data = await response.data;
-
-			return data.data;
-		} catch (err) {
-			toast({
-				variant: 'destructive',
-				description:
-					'Something went wrong while fetching the records. Please try again later.',
-			});
-		}
-	};
-
-	const { data, isLoading, isError } = useQuery<(FinancialRecord & { netWorth: number })[]>({
+	const { data, isLoading, isError } = useQuery<
+		(FinancialRecord & { netWorth: number; totalAssets: number })[]
+	>({
 		queryKey: ['financial-records'],
 		queryFn: getFinancialRecords,
 	});
@@ -66,23 +67,29 @@ export function FinancialRecordTable<TData, TValue>({
 	});
 
 	const getColWidthStyles = (
-		columnId: keyof (z.infer<typeof creationSchema> & { actions: string; netWorth: string })
+		columnId: keyof (z.infer<typeof creationSchema> & {
+			actions: string;
+			netWorth: string;
+			totalAssets: string;
+		})
 	) => {
 		switch (columnId) {
 			case 'date':
 				return '!w-[112px] !min-w-[96px]';
 			case 'grossIncomeYtd':
-				return '!w-[168px] !min-w-[168px]';
+				return '!w-[w-144px] !min-w-[168px]';
 			case 'taxesPaidYtd':
-				return '!w-[168px] !min-w-[146px]';
+				return '!w-[w-144px] !min-w-[146px]';
 			case 'assetsExCash':
-				return '!w-[168px] !min-w-[146px]';
+				return '!w-[w-144px] !min-w-[146px]';
 			case 'cash':
-				return '!w-[128px] !min-w-[80px]';
+				return '![w-144px] !min-w-[80px]';
+			case 'totalAssets':
+				return '!w-[w-144px] !min-w-[128px]';
 			case 'debt':
-				return '!w-[128px] !min-w-[80px]';
+				return '![w-144px] !min-w-[80px]';
 			case 'netWorth':
-				return '!w-[168px] !min-w-[128px]';
+				return '!w-[w-144px] !min-w-[128px]';
 			default:
 				return '!w-[56px] !min-w-[56px]';
 		}
