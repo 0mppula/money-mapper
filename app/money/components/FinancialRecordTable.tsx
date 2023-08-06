@@ -8,6 +8,7 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
+import { toast } from '@/components/ui/use-toast';
 import { cn } from '@/lib/utils';
 import { creationSchema } from '@/schemas/financialRecord';
 import { FinancialRecord } from '@prisma/client';
@@ -22,18 +23,7 @@ import {
 } from '@tanstack/react-table';
 import axios from 'axios';
 import { useState } from 'react';
-import { number, z } from 'zod';
-
-const getFinancialRecords = async () => {
-	try {
-		const response = await axios.get(`/api/financial-records`);
-		const data = await response.data;
-
-		return data.data;
-	} catch (err) {
-		console.log(err);
-	}
-};
+import { z } from 'zod';
 
 interface FinancialRecordTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -43,6 +33,21 @@ export function FinancialRecordTable<TData, TValue>({
 	columns,
 }: FinancialRecordTableProps<TData, TValue>) {
 	const [sorting, setSorting] = useState<SortingState>([]);
+
+	const getFinancialRecords = async () => {
+		try {
+			const response = await axios.get(`/api/financial-recordss`);
+			const data = await response.data;
+
+			return data.data;
+		} catch (err) {
+			toast({
+				variant: 'destructive',
+				description:
+					'Something went wrong while fetching the records. Please try again later.',
+			});
+		}
+	};
 
 	const { data, isLoading, isError } = useQuery<(FinancialRecord & { netWorth: number })[]>({
 		queryKey: ['financial-records'],
