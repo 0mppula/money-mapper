@@ -49,6 +49,19 @@ const CreateFinancialRecordForm = () => {
 	const createFinancialRecordModal = useCreateFinancialRecordModal();
 	const queryClient = useQueryClient();
 
+	const form = useForm<z.infer<typeof creationSchema>>({
+		resolver: zodResolver(creationSchema),
+		defaultValues: {
+			date: new Date(),
+			currency: 'usd',
+			grossIncomeYtd: 0,
+			taxesPaidYtd: 0,
+			assetsExCash: 0,
+			cash: 0,
+			debt: 0,
+		},
+	});
+
 	const createFinancialRecord = async (values: z.infer<typeof creationSchema>) => {
 		await axios.post('/api/financial-records', values);
 	};
@@ -75,19 +88,7 @@ const CreateFinancialRecordForm = () => {
 		onSettled: () => {
 			setIsLoading(false);
 			createFinancialRecordModal.setIsOpen(false);
-		},
-	});
-
-	const form = useForm<z.infer<typeof creationSchema>>({
-		resolver: zodResolver(creationSchema),
-		defaultValues: {
-			date: new Date(),
-			currency: 'usd',
-			grossIncomeYtd: 0,
-			taxesPaidYtd: 0,
-			assetsExCash: 0,
-			cash: 0,
-			debt: 0,
+			form.reset();
 		},
 	});
 
