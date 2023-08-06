@@ -34,7 +34,8 @@ export const getFinancialRecords = async () => {
 	} catch (err) {
 		toast({
 			variant: 'destructive',
-			description: 'Something went wrong while fetching the records. Please try again later.',
+			description:
+				'Something went wrong while fetching your financial records. Please try again later.',
 		});
 	}
 };
