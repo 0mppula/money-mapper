@@ -70,19 +70,19 @@ export function FinancialRecordTable<TData, TValue>({
 	) => {
 		switch (columnId) {
 			case 'date':
-				return '!w-[128px] !min-w-[112px]';
+				return '!w-[112px] !min-w-[96px]';
 			case 'grossIncomeYtd':
-				return '!w-[180px] !min-w-[192px]';
+				return '!w-[168px] !min-w-[168px]';
 			case 'taxesPaidYtd':
-				return '!w-[160px] !min-w-[176px]';
+				return '!w-[168px] !min-w-[146px]';
 			case 'assetsExCash':
-				return '!w-[160px] !min-w-[160px]';
+				return '!w-[168px] !min-w-[146px]';
 			case 'cash':
-				return '!w-[128px] !min-w-[96px]';
+				return '!w-[112px] !min-w-[80px]';
 			case 'debt':
-				return '!w-[128px] !min-w-[96px]';
+				return '!w-[112px] !min-w-[80px]';
 			case 'netWorth':
-				return '!w-[144px] !min-w-[144px]';
+				return '!w-[168px] !min-w-[128px]';
 			default:
 				return '!w-[56px] !min-w-[56px]';
 		}
