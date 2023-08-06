@@ -176,7 +176,7 @@ export const columns: ColumnDef<
 			const currency = row.original.currency;
 			const amount = parseFloat(row.getValue('netWorth'));
 			const red = 'text-red-800 dark:text-red-400';
-			const green = 'text-green-900 dark:text-green-400';
+			const green = 'text-green-800 dark:text-green-400';
 
 			const formatted = new Intl.NumberFormat(getCurrencyLocale(currency), {
 				style: 'currency',
