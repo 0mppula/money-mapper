@@ -78,9 +78,9 @@ export function FinancialRecordTable<TData, TValue>({
 			case 'assetsExCash':
 				return '!w-[168px] !min-w-[146px]';
 			case 'cash':
-				return '!w-[112px] !min-w-[80px]';
+				return '!w-[128px] !min-w-[80px]';
 			case 'debt':
-				return '!w-[112px] !min-w-[80px]';
+				return '!w-[128px] !min-w-[80px]';
 			case 'netWorth':
 				return '!w-[168px] !min-w-[128px]';
 			default:
