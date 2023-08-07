@@ -122,13 +122,14 @@ const Charts = ({}: ChartsProps) => {
 					data={generateTableData('cash')}
 					datasetCurrency={datasetCurrency}
 				/>
+
 				<BarChart
 					title="Total Assets"
 					data={generateTableData('totalAssets')}
 					datasetCurrency={datasetCurrency}
 				/>
 
-				<div className="bg-muted w-full h-16 rounded-sm col-span-2"></div>
+				<div className="bg-muted w-full h-16 rounded-sm md:col-span-2"></div>
 			</div>
 
 			<ChartGroupSeperator title="Debt" />
@@ -140,6 +141,7 @@ const Charts = ({}: ChartsProps) => {
 					data={generateTableData('debt')}
 					datasetCurrency={datasetCurrency}
 				/>
+
 				<div className="bg-muted w-full h-16 rounded-sm"></div>
 				<div className="bg-muted w-full h-16 rounded-sm md:col-span-2"></div>
 			</div>
@@ -153,6 +155,7 @@ const Charts = ({}: ChartsProps) => {
 					data={generateTableData('netWorth')}
 					datasetCurrency={datasetCurrency}
 				/>
+
 				<div className="bg-muted w-full h-16 rounded-sm"></div>
 			</div>
 		</div>
