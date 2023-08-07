@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html className={cn(inter.className, 'antialiased')} lang="en" suppressHydrationWarning>
-			<body className="min-h-screen bg-slate-100 dark:bg-slate-950 antialiased pt-[68px] pb-16">
+			<body className="min-h-screen text-slate-900 dark:text-slate-50 bg-slate-100 dark:bg-slate-950 antialiased pt-[68px] pb-16">
 				<NextSessionProvider>
 					<Nav />
 
