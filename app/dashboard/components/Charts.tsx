@@ -101,11 +101,16 @@ const Charts = ({}: ChartsProps) => {
 			{/* grossIncomeByDate & TaxesByYtdDate  */}
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
 				<BarChart
-					title="Gross Income By Year"
+					title="Gross Income Year-to-Date"
 					data={generateTableData('grossIncomeYtd')}
 					datasetCurrency={datasetCurrency}
 				/>
-				<div className="bg-muted w-full h-16 rounded-sm"></div>
+
+				<BarChart
+					title="Taxes Paid Year-to-Date"
+					data={generateTableData('taxesPaidYtd')}
+					datasetCurrency={datasetCurrency}
+				/>
 			</div>
 
 			<ChartGroupSeperator title="Assets & Cash" />

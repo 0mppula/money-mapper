@@ -1,7 +1,7 @@
 'use client';
 
-import { formatCurrency, formatCurrencyK } from '@/utils/formatFns';
-import { format } from 'date-fns';
+import { formatCurrency } from '@/utils/formatFns';
+import { format, monthsToQuarters } from 'date-fns';
 import { useTheme } from 'next-themes';
 import {
 	Bar,
@@ -40,7 +40,12 @@ const BarChart = ({ title, data, datasetCurrency }: BarChartProps) => {
 						dataKey="x"
 						stroke={computedTheme === 'dark' ? '#f8fafc' : '#0f172a'}
 						fontSize={12}
-						tickFormatter={(value) => `${format(value, 'MM/dd')}`}
+						tickFormatter={(value) =>
+							`Q${monthsToQuarters(new Date(value).getMonth() + 1)} ${format(
+								value,
+								'yy'
+							)}`
+						}
 						tickLine={false}
 						axisLine={{
 							stroke: computedTheme === 'dark' ? '#1e293b' : '#e2e8f0',
