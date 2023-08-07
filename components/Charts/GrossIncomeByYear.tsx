@@ -3,7 +3,7 @@
 import { useTheme } from 'next-themes';
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import ChartContainer from './ChartContainer';
-import { Payload } from 'recharts/types/component/DefaultTooltipContent';
+import CustomTooltip from './CustomTooltip';
 
 const data = [
 	{
@@ -61,34 +61,6 @@ interface GrossIncomeByYearProps {}
 const GrossIncomeByYear = ({}: GrossIncomeByYearProps) => {
 	const { systemTheme, theme } = useTheme();
 	const computedTheme = theme === 'system' ? systemTheme : theme;
-
-	const CustomTooltip = ({
-		active,
-		payload,
-		label,
-	}: {
-		active: boolean | undefined;
-		payload: Payload<string | number | (string | number)[], string | number>[] | undefined;
-		label: string;
-	}) => {
-		if (active && payload && payload.length) {
-			return (
-				<div className="bg-slate-50 dark:bg-slate-950 rounded-md p-3 border-slate-200 dark:border-slate-800 border">
-					<p className="pb-1">{`${label}`}</p>
-					<div>
-						{payload.map((pld) => (
-							// @ts-ignore
-							<div style={{ color: pld.fill }}>
-								{pld.dataKey}: ${pld.value}
-							</div>
-						))}
-					</div>
-				</div>
-			);
-		}
-
-		return null;
-	};
 
 	return (
 		<ChartContainer title="Gross Income By Year">
