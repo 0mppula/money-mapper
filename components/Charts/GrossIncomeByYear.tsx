@@ -22,14 +22,15 @@ interface BarChartProps {
 		y: number;
 		currency: string;
 	}[];
+	className?: string;
 }
 
-const BarChart = ({ title, data, datasetCurrency }: BarChartProps) => {
+const BarChart = ({ title, data, datasetCurrency, className }: BarChartProps) => {
 	const { systemTheme, theme } = useTheme();
 	const computedTheme = theme === 'system' ? systemTheme : theme;
 
 	return (
-		<ChartContainer title={title}>
+		<ChartContainer title={title} className={className}>
 			<ResponsiveContainer width="100%" height={350}>
 				<BarChartElement data={data}>
 					<CartesianGrid

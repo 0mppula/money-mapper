@@ -117,15 +117,29 @@ const Charts = ({}: ChartsProps) => {
 
 			{/* totalAssetsAndCashByDate (side by side)  & totalAssetsByDate*/}
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
-				<div className="bg-muted w-full h-16 rounded-sm"></div>
-				<div className="bg-muted w-full h-16 rounded-sm"></div>
+				<BarChart
+					title="Total cash"
+					data={generateTableData('cash')}
+					datasetCurrency={datasetCurrency}
+				/>
+				<BarChart
+					title="Total Assets"
+					data={generateTableData('totalAssets')}
+					datasetCurrency={datasetCurrency}
+				/>
+
+				<div className="bg-muted w-full h-16 rounded-sm col-span-2"></div>
 			</div>
 
 			<ChartGroupSeperator title="Debt" />
 
 			{/* totalDebtByDate & TotalDebtToTotalAssetsByDate & TotalDebtToNetWorthByDate*/}
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
-				<div className="bg-muted w-full h-16 rounded-sm"></div>
+				<BarChart
+					title="Total Debt"
+					data={generateTableData('debt')}
+					datasetCurrency={datasetCurrency}
+				/>
 				<div className="bg-muted w-full h-16 rounded-sm"></div>
 				<div className="bg-muted w-full h-16 rounded-sm md:col-span-2"></div>
 			</div>
@@ -134,7 +148,11 @@ const Charts = ({}: ChartsProps) => {
 
 			{/* NetWorthByDate & AssetsCashAndTotalDebtByDate */}
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
-				<div className="bg-muted w-full h-16 rounded-sm"></div>
+				<BarChart
+					title="Net Worth"
+					data={generateTableData('netWorth')}
+					datasetCurrency={datasetCurrency}
+				/>
 				<div className="bg-muted w-full h-16 rounded-sm"></div>
 			</div>
 		</div>

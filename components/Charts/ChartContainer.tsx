@@ -1,21 +1,21 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { cn } from '@/lib/utils';
 
 interface ChartContainerProps {
 	title: string;
 	children: React.ReactNode;
+	className?: string;
 }
 
-const ChartContainer = ({ title, children }: ChartContainerProps) => {
+const ChartContainer = ({ title, children, className }: ChartContainerProps) => {
 	return (
-		<div>
-			<Card className="col-span-4">
-				<CardHeader>
-					<CardTitle>{title}</CardTitle>
-				</CardHeader>
-				<CardContent className="pl-2">{children}</CardContent>
-			</Card>
-		</div>
+		<Card className={cn('col-span-1', className)}>
+			<CardHeader>
+				<CardTitle>{title}</CardTitle>
+			</CardHeader>
+			<CardContent className="pl-2">{children}</CardContent>
+		</Card>
 	);
 };
 
