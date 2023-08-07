@@ -83,7 +83,7 @@ const GrossIncomeByYear = ({}: GrossIncomeByYearProps) => {
 						stroke={computedTheme === 'dark' ? '#f8fafc' : '#1e293b'}
 						fontSize={12}
 						tickFormatter={(value) => `$${value}`}
-						tickCount={10}
+						tickCount={9}
 						axisLine={false}
 						tickLine={false}
 					/>
