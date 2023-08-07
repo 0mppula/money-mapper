@@ -1,6 +1,6 @@
 import { getCurrencyLocale } from './currencyFns';
 
-export const formatCurrency = (value: number, currency: string) => {
+export const formatCurrency = (value: number, currency = 'usd') => {
 	let formatted;
 
 	if (value === 0 || isNaN(value)) {
@@ -32,7 +32,7 @@ export const formatCurrency = (value: number, currency: string) => {
 	return formatted;
 };
 
-export const formatCurrencyK = (value: number, locale = 'en-US', currency = 'usd') => {
+export const formatCurrencyK = (value: number, currency = 'usd', locale = 'en-US') => {
 	if (value === 0 || isNaN(value)) {
 		let formatted = new Intl.NumberFormat(locale, {
 			style: 'currency',

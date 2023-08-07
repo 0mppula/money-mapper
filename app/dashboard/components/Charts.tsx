@@ -1,14 +1,14 @@
 'use client';
 
 import { getFinancialRecords } from '@/app/money/components/FinancialRecordTable';
+import GrossIncomeByYear from '@/components/Charts/GrossIncomeByYear';
 import { ChartData } from '@/types/chart-data';
+import getMostCommonElement from '@/utils/getMostCommonElement';
+import { getPreferredCurrency } from '@/utils/localStorageFns';
 import { FinancialRecord } from '@prisma/client';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import ChartGroupSeperator from './ChartGroupSeperator';
-import GrossIncomeByYear from '@/components/Charts/GrossIncomeByYear';
-import getMostCommonElement from '@/utils/getMostCommonElement';
-import { getPreferredCurrency } from '@/utils/localStorageFns';
 
 interface ChartsProps {}
 
@@ -70,6 +70,23 @@ const Charts = ({}: ChartsProps) => {
 		return chartData;
 	}, [data]);
 
+	const generateTableData = (
+		category: Exclude<keyof ChartData, 'currency' | 'dates' | 'datasetCurrency'>
+	) => {
+		const dates = chartDataByDate.dates;
+
+		const tableData = dates.map((date, index) => {
+			const value = chartDataByDate[category][index];
+			const currency = chartDataByDate.currency[index];
+
+			return { x: date, y: value, currency };
+		});
+
+		return tableData;
+	};
+
+	const { datasetCurrency } = chartDataByDate;
+
 	if (isLoading) {
 		return <div>Loading...</div>;
 	} else if (isError) {
@@ -78,14 +95,15 @@ const Charts = ({}: ChartsProps) => {
 		return <div>You dont have any financial records yet. Create one! 📈</div>;
 	}
 
-	console.table(chartDataByDate);
-
 	return (
 		<div className="mt-12">
 			<ChartGroupSeperator title="Salary & Taxes" />
 			{/* grossIncomeByDate & TaxesByYtdDate */}
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
-				<GrossIncomeByYear />
+				<GrossIncomeByYear
+					data={generateTableData('grossIncomeYtd')}
+					datasetCurrency={datasetCurrency}
+				/>
 				<div className="bg-muted w-full h-16 rounded-sm"></div>
 			</div>
 
