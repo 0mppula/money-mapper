@@ -52,6 +52,7 @@ export const columns: ColumnDef<
 			const amount = parseFloat(row.getValue('grossIncomeYtd'));
 			const formatted = new Intl.NumberFormat(getCurrencyLocale(currency), {
 				style: 'currency',
+				maximumFractionDigits: 2,
 				currency: currency,
 			}).format(amount);
 
@@ -77,6 +78,7 @@ export const columns: ColumnDef<
 			const amount = parseFloat(row.getValue('taxesPaidYtd'));
 			const formatted = new Intl.NumberFormat(getCurrencyLocale(currency), {
 				style: 'currency',
+				maximumFractionDigits: 2,
 				currency: currency,
 			}).format(amount);
 
@@ -102,6 +104,7 @@ export const columns: ColumnDef<
 			const amount = parseFloat(row.getValue('assetsExCash'));
 			const formatted = new Intl.NumberFormat(getCurrencyLocale(currency), {
 				style: 'currency',
+				maximumFractionDigits: 2,
 				currency: currency,
 			}).format(amount);
 
@@ -127,6 +130,7 @@ export const columns: ColumnDef<
 			const amount = parseFloat(row.getValue('cash'));
 			const formatted = new Intl.NumberFormat(getCurrencyLocale(currency), {
 				style: 'currency',
+				maximumFractionDigits: 2,
 				currency: currency,
 			}).format(amount);
 
@@ -152,6 +156,7 @@ export const columns: ColumnDef<
 			const amount = parseFloat(row.getValue('totalAssets'));
 			const formatted = new Intl.NumberFormat(getCurrencyLocale(currency), {
 				style: 'currency',
+				maximumFractionDigits: 2,
 				currency: currency,
 			}).format(amount);
 
@@ -177,6 +182,7 @@ export const columns: ColumnDef<
 			const amount = parseFloat(row.getValue('debt'));
 			const formatted = new Intl.NumberFormat(getCurrencyLocale(currency), {
 				style: 'currency',
+				maximumFractionDigits: 2,
 				currency: currency,
 			}).format(amount);
 
@@ -205,6 +211,7 @@ export const columns: ColumnDef<
 
 			const formatted = new Intl.NumberFormat(getCurrencyLocale(currency), {
 				style: 'currency',
+				maximumFractionDigits: 2,
 				currency: currency,
 			}).format(amount);
 

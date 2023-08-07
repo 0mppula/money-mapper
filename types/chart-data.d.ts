@@ -9,4 +9,6 @@ export interface ChartData {
 	netWorth: number[];
 	debtToTotalAssets: number[];
 	debtToNetWorth: number[];
+	currency: string[];
+	datasetCurrency: string;
 }

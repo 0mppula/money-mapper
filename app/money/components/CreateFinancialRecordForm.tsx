@@ -33,12 +33,13 @@ import { currencies } from '@/data/currencies';
 import useCreateFinancialRecordModal from '@/hooks/useCreateFinancialRecordModal';
 import { cn } from '@/lib/utils';
 import { creationSchema } from '@/schemas/financialRecord';
+import { getPreferredCurrency } from '@/utils/localStorageFns';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { format, isToday } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -53,7 +54,7 @@ const CreateFinancialRecordForm = () => {
 		resolver: zodResolver(creationSchema),
 		defaultValues: {
 			date: new Date(),
-			currency: 'usd',
+			currency: getPreferredCurrency(),
 			grossIncomeYtd: 0,
 			taxesPaidYtd: 0,
 			assetsExCash: 0,
@@ -61,6 +62,13 @@ const CreateFinancialRecordForm = () => {
 			debt: 0,
 		},
 	});
+
+	// Get the users preferred currency from local storage and set it as the default value for the currency field.
+	useEffect(() => {
+		if (createFinancialRecordModal.isOpen) {
+			form.setValue('currency', getPreferredCurrency());
+		}
+	}, [createFinancialRecordModal.isOpen]);
 
 	const createFinancialRecord = async (values: z.infer<typeof creationSchema>) => {
 		await axios.post('/api/financial-records', values);
@@ -176,7 +184,13 @@ const CreateFinancialRecordForm = () => {
 										<FormItem className="w-full">
 											<FormLabel>Currency</FormLabel>
 											<Select
-												onValueChange={field.onChange}
+												onValueChange={(value) => {
+													field.onChange(value);
+													localStorage.setItem(
+														'preferredCurrency',
+														value
+													);
+												}}
 												defaultValue={field.value}
 											>
 												<FormControl>
@@ -213,6 +227,7 @@ const CreateFinancialRecordForm = () => {
 											<FormControl>
 												<Input
 													type="number"
+													step="0.01"
 													placeholder="30000"
 													{...field}
 												/>
@@ -232,6 +247,7 @@ const CreateFinancialRecordForm = () => {
 											<FormControl>
 												<Input
 													type="number"
+													step="0.01"
 													placeholder="15000"
 													{...field}
 												/>
@@ -253,6 +269,7 @@ const CreateFinancialRecordForm = () => {
 											<FormControl>
 												<Input
 													type="number"
+													step="0.01"
 													placeholder="10000"
 													{...field}
 												/>
@@ -272,6 +289,7 @@ const CreateFinancialRecordForm = () => {
 											<FormControl>
 												<Input
 													type="number"
+													step="0.01"
 													placeholder="10000"
 													{...field}
 												/>
@@ -290,7 +308,12 @@ const CreateFinancialRecordForm = () => {
 									<FormItem>
 										<FormLabel>Debt</FormLabel>
 										<FormControl>
-											<Input type="number" placeholder="10000" {...field} />
+											<Input
+												type="number"
+												step="0.01"
+												placeholder="10000"
+												{...field}
+											/>
 										</FormControl>
 										<FormMessage />
 									</FormItem>

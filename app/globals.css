@@ -8,6 +8,17 @@ body,
 	height: 100%;
 }
 
+/* Hide arrows on number inputs */
+input[type='number'] {
+	-webkit-appearance: none;
+	-moz-appearance: textfield;
+	appearance: textfield;
+	&::-webkit-inner-spin-button,
+	&::-webkit-outer-spin-button {
+		display: none;
+	}
+}
+
 @layer base {
 	:root {
 		--background: 0 0% 100%;

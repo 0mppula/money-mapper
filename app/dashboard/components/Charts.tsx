@@ -7,6 +7,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import ChartGroupSeperator from './ChartGroupSeperator';
 import GrossIncomeByYear from '@/components/Charts/GrossIncomeByYear';
+import getMostCommonElement from '@/utils/getMostCommonElement';
+import { getPreferredCurrency } from '@/utils/localStorageFns';
 
 interface ChartsProps {}
 
@@ -29,6 +31,8 @@ const Charts = ({}: ChartsProps) => {
 			netWorth: [],
 			debtToTotalAssets: [],
 			debtToNetWorth: [],
+			currency: [],
+			datasetCurrency: getPreferredCurrency(),
 		};
 
 		const sortedData = [...(data || [])].sort(
@@ -46,6 +50,7 @@ const Charts = ({}: ChartsProps) => {
 			const netWorth = totalAssets - debt;
 			const debtToTotalAssets = totalAssets !== 0 ? debt / totalAssets : 0;
 			const debtToNetWorth = netWorth !== 0 ? debt / netWorth : 0;
+			const currency = record.currency;
 
 			chartData.dates.push(date);
 			chartData.grossIncomeYtd.push(grossIncomeYtd);
@@ -57,7 +62,10 @@ const Charts = ({}: ChartsProps) => {
 			chartData.netWorth.push(netWorth);
 			chartData.debtToTotalAssets.push(debtToTotalAssets);
 			chartData.debtToNetWorth.push(debtToNetWorth);
+			chartData.currency.push(currency);
 		});
+
+		chartData.datasetCurrency = getMostCommonElement(chartData.currency);
 
 		return chartData;
 	}, [data]);
@@ -95,7 +103,7 @@ const Charts = ({}: ChartsProps) => {
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
 				<div className="bg-muted w-full h-16 rounded-sm"></div>
 				<div className="bg-muted w-full h-16 rounded-sm"></div>
-				<div className="bg-muted w-full h-16 rounded-sm col-span-2"></div>
+				<div className="bg-muted w-full h-16 rounded-sm md:col-span-2"></div>
 			</div>
 
 			<ChartGroupSeperator title="Net Worth" />

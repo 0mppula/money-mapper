@@ -181,7 +181,10 @@ const EditFinancialRecordForm = () => {
 									<FormItem className="w-full">
 										<FormLabel>Currency</FormLabel>
 										<Select
-											onValueChange={field.onChange}
+											onValueChange={(value) => {
+												field.onChange(value);
+												localStorage.setItem('preferredCurrency', value);
+											}}
 											defaultValue={field.value}
 										>
 											<FormControl>
@@ -216,7 +219,12 @@ const EditFinancialRecordForm = () => {
 									<FormItem className="w-full">
 										<FormLabel>Gross income year-to-date</FormLabel>
 										<FormControl>
-											<Input type="number" placeholder="30000" {...field} />
+											<Input
+												type="number"
+												step="0.01"
+												placeholder="30000"
+												{...field}
+											/>
 										</FormControl>
 										<FormMessage />
 									</FormItem>
@@ -231,7 +239,12 @@ const EditFinancialRecordForm = () => {
 									<FormItem className="w-full">
 										<FormLabel>Taxes paid year-to-date</FormLabel>
 										<FormControl>
-											<Input type="number" placeholder="15000" {...field} />
+											<Input
+												type="number"
+												step="0.01"
+												placeholder="15000"
+												{...field}
+											/>
 										</FormControl>
 										<FormMessage />
 									</FormItem>
@@ -248,7 +261,12 @@ const EditFinancialRecordForm = () => {
 									<FormItem className="w-full">
 										<FormLabel>Assets excluding cash</FormLabel>
 										<FormControl>
-											<Input type="number" placeholder="10000" {...field} />
+											<Input
+												type="number"
+												step="0.01"
+												placeholder="10000"
+												{...field}
+											/>
 										</FormControl>
 										<FormMessage />
 									</FormItem>
@@ -263,7 +281,12 @@ const EditFinancialRecordForm = () => {
 									<FormItem className="w-full">
 										<FormLabel>Cash</FormLabel>
 										<FormControl>
-											<Input type="number" placeholder="10000" {...field} />
+											<Input
+												type="number"
+												step="0.01"
+												placeholder="10000"
+												{...field}
+											/>
 										</FormControl>
 										<FormMessage />
 									</FormItem>
@@ -279,7 +302,12 @@ const EditFinancialRecordForm = () => {
 								<FormItem>
 									<FormLabel>Debt</FormLabel>
 									<FormControl>
-										<Input type="number" placeholder="10000" {...field} />
+										<Input
+											type="number"
+											step="0.01"
+											placeholder="10000"
+											{...field}
+										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>
