@@ -1,7 +1,7 @@
 'use client';
 
 import { getFinancialRecords } from '@/app/money/components/FinancialRecordTable';
-import BarChart from '@/components/Charts/GrossIncomeByYear';
+import BarChart from '@/components/Charts/BarChart';
 import { ChartData } from '@/types/chart-data';
 import getMostCommonElement from '@/utils/getMostCommonElement';
 import { getPreferredCurrency } from '@/utils/localStorageFns';
@@ -134,7 +134,7 @@ const Charts = ({}: ChartsProps) => {
 
 			<ChartGroupSeperator title="Debt" />
 
-			{/* totalDebtByDate & TotalDebtToTotalAssetsByDate & TotalDebtToNetWorthByDate*/}
+			{/* totalDebtByDate & TotalDebtToTotalAssetsByDate (ratio) & TotalDebtToNetWorthByDate (ratio) */}
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
 				<BarChart
 					title="Total Debt"
@@ -148,7 +148,7 @@ const Charts = ({}: ChartsProps) => {
 
 			<ChartGroupSeperator title="Net Worth" />
 
-			{/* NetWorthByDate & AssetsCashAndTotalDebtByDate */}
+			{/* NetWorthByDate & AssetsCashAndTotalDebtByDate (side by side) */}
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
 				<BarChart
 					title="Net Worth"
