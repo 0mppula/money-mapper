@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { creationSchema } from '@/schemas/financialRecord';
-import { getCurrencyLocale } from '@/utils/currencyFns';
+import { formatCurrency } from '@/utils/formatFns';
 import { CaretSortIcon } from '@radix-ui/react-icons';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
@@ -50,11 +50,7 @@ export const columns: ColumnDef<
 		cell: ({ row }) => {
 			const currency = row.original.currency;
 			const amount = parseFloat(row.getValue('grossIncomeYtd'));
-			const formatted = new Intl.NumberFormat(getCurrencyLocale(currency), {
-				style: 'currency',
-				maximumFractionDigits: 2,
-				currency: currency,
-			}).format(amount);
+			const formatted = formatCurrency(amount, currency);
 
 			return <div>{formatted}</div>;
 		},
@@ -76,11 +72,7 @@ export const columns: ColumnDef<
 		cell: ({ row }) => {
 			const currency = row.original.currency;
 			const amount = parseFloat(row.getValue('taxesPaidYtd'));
-			const formatted = new Intl.NumberFormat(getCurrencyLocale(currency), {
-				style: 'currency',
-				maximumFractionDigits: 2,
-				currency: currency,
-			}).format(amount);
+			const formatted = formatCurrency(amount, currency);
 
 			return <div>{formatted}</div>;
 		},
@@ -102,11 +94,7 @@ export const columns: ColumnDef<
 		cell: ({ row }) => {
 			const currency = row.original.currency;
 			const amount = parseFloat(row.getValue('assetsExCash'));
-			const formatted = new Intl.NumberFormat(getCurrencyLocale(currency), {
-				style: 'currency',
-				maximumFractionDigits: 2,
-				currency: currency,
-			}).format(amount);
+			const formatted = formatCurrency(amount, currency);
 
 			return <div>{formatted}</div>;
 		},
@@ -128,11 +116,7 @@ export const columns: ColumnDef<
 		cell: ({ row }) => {
 			const currency = row.original.currency;
 			const amount = parseFloat(row.getValue('cash'));
-			const formatted = new Intl.NumberFormat(getCurrencyLocale(currency), {
-				style: 'currency',
-				maximumFractionDigits: 2,
-				currency: currency,
-			}).format(amount);
+			const formatted = formatCurrency(amount, currency);
 
 			return <div>{formatted}</div>;
 		},
@@ -154,11 +138,7 @@ export const columns: ColumnDef<
 		cell: ({ row }) => {
 			const currency = row.original.currency;
 			const amount = parseFloat(row.getValue('totalAssets'));
-			const formatted = new Intl.NumberFormat(getCurrencyLocale(currency), {
-				style: 'currency',
-				maximumFractionDigits: 2,
-				currency: currency,
-			}).format(amount);
+			const formatted = formatCurrency(amount, currency);
 
 			return <div>{formatted}</div>;
 		},
@@ -180,11 +160,7 @@ export const columns: ColumnDef<
 		cell: ({ row }) => {
 			const currency = row.original.currency;
 			const amount = parseFloat(row.getValue('debt'));
-			const formatted = new Intl.NumberFormat(getCurrencyLocale(currency), {
-				style: 'currency',
-				maximumFractionDigits: 2,
-				currency: currency,
-			}).format(amount);
+			const formatted = formatCurrency(amount, currency);
 
 			return <div>{formatted}</div>;
 		},
@@ -209,11 +185,7 @@ export const columns: ColumnDef<
 			const red = 'text-red-800 dark:text-red-400';
 			const green = 'text-green-800 dark:text-green-400';
 
-			const formatted = new Intl.NumberFormat(getCurrencyLocale(currency), {
-				style: 'currency',
-				maximumFractionDigits: 2,
-				currency: currency,
-			}).format(amount);
+			const formatted = formatCurrency(amount, currency);
 
 			return <div className={amount > 0 ? green : amount !== 0 ? red : ''}>{formatted}</div>;
 		},
