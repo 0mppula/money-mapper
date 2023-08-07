@@ -14,7 +14,7 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
 				<div>
 					{payload.map((pld, i) => (
 						// @ts-ignore
-						<div key={(i, +'tool-tip-component')} style={{ color: pld.fill }}>
+						<div key={i + 'tool-tip-component'} style={{ color: pld.fill }}>
 							{pld.dataKey}: ${pld.value}
 						</div>
 					))}
