@@ -1,7 +1,7 @@
 'use client';
 
 import { getFinancialRecords } from '@/app/money/components/FinancialRecordTable';
-import GrossIncomeByYear from '@/components/Charts/GrossIncomeByYear';
+import BarChart from '@/components/Charts/GrossIncomeByYear';
 import { ChartData } from '@/types/chart-data';
 import getMostCommonElement from '@/utils/getMostCommonElement';
 import { getPreferredCurrency } from '@/utils/localStorageFns';
@@ -98,9 +98,10 @@ const Charts = ({}: ChartsProps) => {
 	return (
 		<div className="mt-12">
 			<ChartGroupSeperator title="Salary & Taxes" />
-			{/* grossIncomeByDate & TaxesByYtdDate */}
+			{/* grossIncomeByDate & TaxesByYtdDate  */}
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
-				<GrossIncomeByYear
+				<BarChart
+					title="Gross Income By Year"
 					data={generateTableData('grossIncomeYtd')}
 					datasetCurrency={datasetCurrency}
 				/>

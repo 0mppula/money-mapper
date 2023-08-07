@@ -3,10 +3,19 @@
 import { formatCurrency, formatCurrencyK } from '@/utils/formatFns';
 import { format } from 'date-fns';
 import { useTheme } from 'next-themes';
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import {
+	Bar,
+	BarChart as BarChartElement,
+	CartesianGrid,
+	ResponsiveContainer,
+	Tooltip,
+	XAxis,
+	YAxis,
+} from 'recharts';
 import ChartContainer from './ChartContainer';
 
-interface GrossIncomeByYearProps {
+interface BarChartProps {
+	title: string;
 	datasetCurrency: string;
 	data: {
 		x: Date;
@@ -15,14 +24,14 @@ interface GrossIncomeByYearProps {
 	}[];
 }
 
-const GrossIncomeByYear = ({ data, datasetCurrency }: GrossIncomeByYearProps) => {
+const BarChart = ({ title, data, datasetCurrency }: BarChartProps) => {
 	const { systemTheme, theme } = useTheme();
 	const computedTheme = theme === 'system' ? systemTheme : theme;
 
 	return (
-		<ChartContainer title="Gross Income By Year">
+		<ChartContainer title={title}>
 			<ResponsiveContainer width="100%" height={350}>
-				<BarChart data={data}>
+				<BarChartElement data={data}>
 					<CartesianGrid
 						stroke={computedTheme === 'dark' ? '#1e293b' : '#e2e8f0'}
 						vertical={false}
@@ -40,7 +49,7 @@ const GrossIncomeByYear = ({ data, datasetCurrency }: GrossIncomeByYearProps) =>
 					<YAxis
 						stroke={computedTheme === 'dark' ? '#f8fafc' : '#1e293b'}
 						fontSize={12}
-						tickFormatter={(value) => `${formatCurrencyK(value, datasetCurrency)}`}
+						tickFormatter={(value) => `${formatCurrency(value, datasetCurrency, 0)}`}
 						tickCount={9}
 						axisLine={false}
 						tickLine={false}
@@ -68,10 +77,10 @@ const GrossIncomeByYear = ({ data, datasetCurrency }: GrossIncomeByYearProps) =>
 									: '1px solid #e2e8f0',
 						}}
 					/>
-				</BarChart>
+				</BarChartElement>
 			</ResponsiveContainer>
 		</ChartContainer>
 	);
 };
 
-export default GrossIncomeByYear;
+export default BarChart;

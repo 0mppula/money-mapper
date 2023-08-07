@@ -1,6 +1,6 @@
 import { getCurrencyLocale } from './currencyFns';
 
-export const formatCurrency = (value: number, currency = 'usd') => {
+export const formatCurrency = (value: number, currency = 'usd', maximumFractionDigits = 2) => {
 	let formatted;
 
 	if (value === 0 || isNaN(value)) {
@@ -24,7 +24,7 @@ export const formatCurrency = (value: number, currency = 'usd') => {
 	} else {
 		formatted = new Intl.NumberFormat(getCurrencyLocale(currency), {
 			style: 'currency',
-			maximumFractionDigits: 2,
+			maximumFractionDigits,
 			currency,
 		}).format(value);
 	}
