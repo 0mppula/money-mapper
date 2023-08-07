@@ -12,9 +12,9 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
 			<div className="bg-white dark:bg-slate-950 rounded-md p-3 border-slate-200 dark:border-slate-800 border">
 				<p className="pb-1">{`${label}`}</p>
 				<div>
-					{payload.map((pld) => (
+					{payload.map((pld, i) => (
 						// @ts-ignore
-						<div style={{ color: pld.fill }}>
+						<div key={(i, +'tool-tip-component')} style={{ color: pld.fill }}>
 							{pld.dataKey}: ${pld.value}
 						</div>
 					))}
