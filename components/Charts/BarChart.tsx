@@ -14,6 +14,7 @@ import {
 	YAxis,
 } from 'recharts';
 import ChartContainer from './ChartContainer';
+import { useWindowWidth } from '@/hooks/useWindowWidth';
 
 interface BarChartProps {
 	title: string;
@@ -36,6 +37,7 @@ const BarChart = ({
 	className,
 	showLegend = false,
 }: BarChartProps) => {
+	const windowWidth = useWindowWidth();
 	const { systemTheme, theme } = useTheme();
 	const computedTheme = theme === 'system' ? systemTheme : theme;
 
@@ -94,7 +96,9 @@ const BarChart = ({
 						/>
 					))}
 
-					{showLegend && <Legend verticalAlign="top" height={36} />}
+					{showLegend && (
+						<Legend verticalAlign="top" height={windowWidth >= 368 ? 36 : undefined} />
+					)}
 
 					<Tooltip
 						cursor={false}

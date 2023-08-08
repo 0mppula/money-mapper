@@ -178,7 +178,7 @@ const Charts = ({}: ChartsProps) => {
 				/>
 
 				<BarChart
-					title="Total Cash, Assets Ex Cash & Debt"
+					title="Total Cash, Assets Excluding Cash & Debt"
 					data={generateTableData(
 						['cash', 'assetsExCash', 'debt'],
 						['Cash', 'Assets ex cash', 'Debt']
