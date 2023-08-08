@@ -1,9 +1,14 @@
 import { getCurrencyLocale } from './currencyFns';
 
-export const formatCurrency = (value: number, currency = 'usd', maximumFractionDigits = 2) => {
+export const formatCurrency = (
+	value: number,
+	currency = 'usd',
+	maximumFractionDigits = 2,
+	formatZero = true
+) => {
 	let formatted;
 
-	if (value === 0 || isNaN(value)) {
+	if ((value === 0 && formatZero) || isNaN(value)) {
 		switch (currency) {
 			case 'eur':
 				formatted = '0,00 €';

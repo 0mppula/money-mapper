@@ -76,7 +76,9 @@ const BarChart = ({
 					<YAxis
 						stroke={textColor}
 						fontSize={12}
-						tickFormatter={(value) => `${formatCurrency(value, datasetCurrency, 0)}`}
+						tickFormatter={(value) =>
+							`${formatCurrency(value, datasetCurrency, 0, false)}`
+						}
 						tickCount={9}
 						axisLine={false}
 						tickLine={false}
