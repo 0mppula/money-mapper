@@ -48,8 +48,8 @@ const Charts = ({}: ChartsProps) => {
 			const totalAssets = assetsExCash + cash;
 			const debt = record.debt;
 			const netWorth = totalAssets - debt;
-			const debtToTotalAssets = totalAssets !== 0 ? debt / totalAssets : 0;
-			const debtToNetWorth = netWorth !== 0 ? debt / netWorth : 0;
+			const debtToTotalAssets = totalAssets !== 0 ? (debt / totalAssets) * 100 : 0;
+			const debtToNetWorth = netWorth !== 0 ? (debt / netWorth) * 100 : 0;
 			const currency = record.currency;
 
 			chartData.dates.push(date);
@@ -164,8 +164,20 @@ const Charts = ({}: ChartsProps) => {
 					datasetCurrency={datasetCurrency}
 				/>
 
-				<div className="bg-muted w-full h-16 rounded-sm"></div>
-				<div className="bg-muted w-full h-16 rounded-sm md:col-span-2"></div>
+				<BarChart
+					title="Total Debt / Total Assets"
+					data={generateTableData(['debtToTotalAssets'], ['Debt /  assets'])}
+					dataType="percentage"
+					datasetCurrency={datasetCurrency}
+				/>
+
+				<BarChart
+					title="Total Debt / Net Worth"
+					data={generateTableData(['debtToNetWorth'], ['Debt /  net worth'])}
+					dataType="percentage"
+					className="md:col-span-2"
+					datasetCurrency={datasetCurrency}
+				/>
 			</div>
 
 			<ChartGroupSeperator title="Net Worth" />

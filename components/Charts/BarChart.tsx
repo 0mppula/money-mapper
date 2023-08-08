@@ -20,6 +20,7 @@ interface BarChartProps {
 	title: string;
 	showLegend?: boolean;
 	datasetCurrency: string;
+	dataType?: 'currency' | 'percentage';
 	data: {
 		data: { x: Date; currency: string }[];
 		barData: {
@@ -34,6 +35,7 @@ const BarChart = ({
 	title,
 	data,
 	datasetCurrency,
+	dataType = 'currency',
 	className,
 	showLegend = false,
 }: BarChartProps) => {
@@ -78,9 +80,13 @@ const BarChart = ({
 					<YAxis
 						stroke={textColor}
 						fontSize={12}
-						tickFormatter={(value) =>
-							`${formatCurrency(value, datasetCurrency, 0, false)}`
-						}
+						tickFormatter={(value) => {
+							if (dataType === 'percentage') {
+								return `${value.toFixed(0)}%`;
+							}
+
+							return `${formatCurrency(value, datasetCurrency, 0, false)}`;
+						}}
 						tickCount={9}
 						axisLine={false}
 						tickLine={false}
@@ -105,7 +111,13 @@ const BarChart = ({
 						separator=": "
 						labelFormatter={(value) => `${format(value, 'MM/dd/yyyy')}`}
 						formatter={(value: number, payload, props) => {
-							const formattedValue = formatCurrency(value, props.payload.currency);
+							let formattedValue;
+
+							if (dataType === 'percentage') {
+								formattedValue = `${value.toFixed(2)}%`;
+							} else {
+								formattedValue = formatCurrency(value, props.payload.currency);
+							}
 
 							return [formattedValue, `${props?.name}`];
 						}}
