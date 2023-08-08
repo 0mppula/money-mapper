@@ -6,12 +6,13 @@ interface ChartContainerProps {
 	title: string;
 	children: React.ReactNode;
 	className?: string;
+	hasLegend?: boolean;
 }
 
-const ChartContainer = ({ title, children, className }: ChartContainerProps) => {
+const ChartContainer = ({ title, children, className, hasLegend = false }: ChartContainerProps) => {
 	return (
 		<Card className={cn('col-span-1', className)}>
-			<CardHeader>
+			<CardHeader className={hasLegend ? 'pb-3' : ''}>
 				<CardTitle>{title}</CardTitle>
 			</CardHeader>
 			<CardContent className="pl-2">{children}</CardContent>

@@ -7,6 +7,7 @@ import {
 	Bar,
 	BarChart as BarChartElement,
 	CartesianGrid,
+	Legend,
 	ResponsiveContainer,
 	Tooltip,
 	XAxis,
@@ -16,30 +17,52 @@ import ChartContainer from './ChartContainer';
 
 interface BarChartProps {
 	title: string;
+	showLegend?: boolean;
 	datasetCurrency: string;
 	data: {
-		x: Date;
-		y: number;
-		currency: string;
-	}[];
+		data: { x: Date; currency: string }[];
+		barData: {
+			count: number;
+			categories: string[];
+		};
+	};
 	className?: string;
 }
 
-const BarChart = ({ title, data, datasetCurrency, className }: BarChartProps) => {
+const BarChart = ({
+	title,
+	data,
+	datasetCurrency,
+	className,
+	showLegend = false,
+}: BarChartProps) => {
 	const { systemTheme, theme } = useTheme();
 	const computedTheme = theme === 'system' ? systemTheme : theme;
 
+	const limeColor = computedTheme === 'dark' ? '#a3e635' : '#3f6212';
+	const complementaryColor = computedTheme === 'dark' ? '#AE84F0' : '#351262';
+	const mutedColor = computedTheme === 'dark' ? '#1e293b' : '#e2e8f0';
+	const textColor = computedTheme === 'dark' ? '#f8fafc' : '#020617';
+
+	const fillBar = (barIndex: number) => {
+		// Alternate colors in a sequence.
+		if (barIndex % 3 === 0) {
+			return limeColor;
+		} else if ((barIndex - 1) % 3 === 0) {
+			return complementaryColor;
+		} else {
+			return textColor;
+		}
+	};
+
 	return (
-		<ChartContainer title={title} className={className}>
+		<ChartContainer title={title} className={className} hasLegend={showLegend}>
 			<ResponsiveContainer width="100%" height={350}>
-				<BarChartElement data={data}>
-					<CartesianGrid
-						stroke={computedTheme === 'dark' ? '#1e293b' : '#e2e8f0'}
-						vertical={false}
-					/>
+				<BarChartElement data={data.data}>
+					<CartesianGrid stroke={mutedColor} vertical={false} />
 					<XAxis
 						dataKey="x"
-						stroke={computedTheme === 'dark' ? '#f8fafc' : '#0f172a'}
+						stroke={textColor}
 						fontSize={12}
 						tickFormatter={(value) =>
 							`Q${monthsToQuarters(new Date(value).getMonth() + 1)} ${format(
@@ -48,39 +71,42 @@ const BarChart = ({ title, data, datasetCurrency, className }: BarChartProps) =>
 							)}`
 						}
 						tickLine={false}
-						axisLine={{
-							stroke: computedTheme === 'dark' ? '#1e293b' : '#e2e8f0',
-						}}
+						axisLine={{ stroke: mutedColor }}
 					/>
 					<YAxis
-						stroke={computedTheme === 'dark' ? '#f8fafc' : '#1e293b'}
+						stroke={textColor}
 						fontSize={12}
 						tickFormatter={(value) => `${formatCurrency(value, datasetCurrency, 0)}`}
 						tickCount={9}
 						axisLine={false}
 						tickLine={false}
 					/>
-					<Bar
-						dataKey="y"
-						fill={computedTheme === 'dark' ? '#a3e635' : '#3f6212'}
-						radius={[4, 4, 0, 0]}
-					/>
+
+					{Array.from({ length: data.barData.count }).map((_, i) => (
+						<Bar
+							name={data.barData?.categories?.[i] || `dataset ${i + 1}`}
+							key={`${title}-bar-${i}`}
+							dataKey={`y${i}`}
+							fill={fillBar(i)}
+							radius={[4, 4, 0, 0]}
+						/>
+					))}
+
+					{showLegend && <Legend verticalAlign="top" height={36} />}
+
 					<Tooltip
 						cursor={false}
 						separator=": "
 						labelFormatter={(value) => `${format(value, 'MM/dd/yyyy')}`}
-						formatter={(value: number, _, props) => {
+						formatter={(value: number, payload, props) => {
 							const formattedValue = formatCurrency(value, props.payload.currency);
 
-							return [formattedValue];
+							return [formattedValue, `${props?.name}`];
 						}}
 						contentStyle={{
 							borderRadius: '6px',
 							backgroundColor: computedTheme === 'dark' ? '#020617' : '#fff',
-							border:
-								computedTheme === 'dark'
-									? '1px solid #1e293b'
-									: '1px solid #e2e8f0',
+							borderColor: mutedColor,
 						}}
 					/>
 				</BarChartElement>

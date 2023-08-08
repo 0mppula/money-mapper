@@ -71,18 +71,30 @@ const Charts = ({}: ChartsProps) => {
 	}, [data]);
 
 	const generateTableData = (
-		category: Exclude<keyof ChartData, 'currency' | 'dates' | 'datasetCurrency'>
+		categories: Exclude<keyof ChartData, 'currency' | 'dates' | 'datasetCurrency'>[],
+		labels: string[]
 	) => {
 		const dates = chartDataByDate.dates;
 
 		const tableData = dates.map((date, index) => {
-			const value = chartDataByDate[category][index];
+			let categoryValues: { [key: string]: number } = {};
+
+			categories.forEach((category, i) => {
+				categoryValues[`y${i}`] = chartDataByDate[category][index];
+			});
+
 			const currency = chartDataByDate.currency[index];
 
-			return { x: date, y: value, currency };
+			return { x: date, currency, ...categoryValues };
 		});
 
-		return tableData;
+		return {
+			data: tableData,
+			barData: {
+				count: categories.length,
+				categories: labels,
+			},
+		};
 	};
 
 	const { datasetCurrency } = chartDataByDate;
@@ -98,38 +110,48 @@ const Charts = ({}: ChartsProps) => {
 	return (
 		<div className="mt-12">
 			<ChartGroupSeperator title="Salary & Taxes" />
-			{/* grossIncomeByDate & TaxesByYtdDate  */}
+
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
 				<BarChart
 					title="Gross Income Year-to-Date"
-					data={generateTableData('grossIncomeYtd')}
+					data={generateTableData(['grossIncomeYtd'], ['Gross income YTD'])}
 					datasetCurrency={datasetCurrency}
 				/>
 
 				<BarChart
 					title="Taxes Paid Year-to-Date"
-					data={generateTableData('taxesPaidYtd')}
+					data={generateTableData(['taxesPaidYtd'], ['Taxes paid YTD'])}
 					datasetCurrency={datasetCurrency}
 				/>
 			</div>
 
 			<ChartGroupSeperator title="Assets & Cash" />
 
-			{/* totalAssetsAndCashByDate (side by side)  & totalAssetsByDate*/}
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
 				<BarChart
 					title="Total cash"
-					data={generateTableData('cash')}
+					data={generateTableData(['cash'], ['Cash'])}
+					datasetCurrency={datasetCurrency}
+				/>
+
+				<BarChart
+					title="Total Assets Excluding Cash"
+					data={generateTableData(['assetsExCash'], ['Assets ex cash'])}
 					datasetCurrency={datasetCurrency}
 				/>
 
 				<BarChart
 					title="Total Assets"
-					data={generateTableData('totalAssets')}
+					data={generateTableData(['totalAssets'], ['Assets'])}
 					datasetCurrency={datasetCurrency}
 				/>
 
-				<div className="bg-muted w-full h-16 rounded-sm md:col-span-2"></div>
+				<BarChart
+					title="Total Assets by Type"
+					data={generateTableData(['cash', 'assetsExCash'], ['Cash', 'Assets ex cash'])}
+					showLegend
+					datasetCurrency={datasetCurrency}
+				/>
 			</div>
 
 			<ChartGroupSeperator title="Debt" />
@@ -138,7 +160,7 @@ const Charts = ({}: ChartsProps) => {
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
 				<BarChart
 					title="Total Debt"
-					data={generateTableData('debt')}
+					data={generateTableData(['debt'], ['Debt'])}
 					datasetCurrency={datasetCurrency}
 				/>
 
@@ -148,15 +170,22 @@ const Charts = ({}: ChartsProps) => {
 
 			<ChartGroupSeperator title="Net Worth" />
 
-			{/* NetWorthByDate & AssetsCashAndTotalDebtByDate (side by side) */}
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
 				<BarChart
 					title="Net Worth"
-					data={generateTableData('netWorth')}
+					data={generateTableData(['netWorth'], ['Net worth'])}
 					datasetCurrency={datasetCurrency}
 				/>
 
-				<div className="bg-muted w-full h-16 rounded-sm"></div>
+				<BarChart
+					title="Total Cash, Assets Ex Cash & Debt"
+					data={generateTableData(
+						['cash', 'assetsExCash', 'debt'],
+						['Cash', 'Assets ex cash', 'Debt']
+					)}
+					datasetCurrency={datasetCurrency}
+					showLegend
+				/>
 			</div>
 		</div>
 	);
