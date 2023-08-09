@@ -5,7 +5,11 @@ interface PageContainerProps {
 }
 
 const PageContainer = ({ children }: PageContainerProps) => {
-	return <div className="container max-w-7xl py-8 md:py-12">{children}</div>;
+	return (
+		<div className="container max-w-7xl pt-8 pb-20 md:pt-12 min-h-[calc(100vh-69px)]">
+			{children}
+		</div>
+	);
 };
 
 export default PageContainer;
