@@ -102,7 +102,7 @@ const Charts = () => {
 
 	return (
 		<div className="mt-12">
-			<ChartGroupSeperator title="Salary & Taxes" />
+			<ChartGroupSeperator title="Income & Taxes" />
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
 				<BarChart
