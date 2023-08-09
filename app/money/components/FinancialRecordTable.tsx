@@ -1,5 +1,6 @@
 'use client';
 
+import { Skeleton } from '@/components/ui/skeleton';
 import {
 	Table,
 	TableBody,
@@ -147,12 +148,24 @@ export function FinancialRecordTable<TData, TValue>({
 						))
 					) : (
 						<TableRow>
-							<TableCell colSpan={columns?.length} className="h-24 text-center">
-								{isLoading
-									? 'Loading...'
-									: isError
-									? 'Error loading financial records.'
-									: 'You dont have any financial records yet. Create one! 📈'}
+							<TableCell colSpan={columns?.length} className="h-24 md:text-center">
+								{isLoading ? (
+									Array.from({ length: 5 }).map((_, i) => (
+										<Skeleton
+											key={`skeleton-${i}`}
+											className={`h-12 w-full ${i < 4 ? 'mb-2' : ''}`}
+										/>
+									))
+								) : isError ? (
+									<span className="px-2">
+										An error occurred while loading your financial records.
+										Please try again later.
+									</span>
+								) : (
+									<span className="px-2">
+										{"You don't have any financial records yet. 📈"}
+									</span>
+								)}
 							</TableCell>
 						</TableRow>
 					)}
