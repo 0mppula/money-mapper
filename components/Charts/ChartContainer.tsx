@@ -47,7 +47,7 @@ const ChartContainer = ({
 						<CardTitle>{title}</CardTitle>
 					</CardHeader>
 					<div className="h-[376px] flex items-center justify-center px-4 text-center">
-						You don't have any financial records yet. 📈
+						{"You don't have any financial records yet. 📈"}
 					</div>
 				</>
 			);
