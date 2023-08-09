@@ -10,15 +10,12 @@ import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import ChartGroupSeperator from './ChartGroupSeperator';
 
-interface ChartsProps {}
-
-const Charts = ({}: ChartsProps) => {
+const Charts = () => {
 	const { data, isLoading, isError } = useQuery<(FinancialRecord & { netWorth: number })[]>({
 		queryKey: ['financial-records'],
 		queryFn: getFinancialRecords,
 	});
 
-	// grossIncomeByDate
 	const chartDataByDate = useMemo(() => {
 		const chartData: ChartData = {
 			dates: [],
@@ -70,42 +67,38 @@ const Charts = ({}: ChartsProps) => {
 		return chartData;
 	}, [data]);
 
-	const generateTableData = (
-		categories: Exclude<keyof ChartData, 'currency' | 'dates' | 'datasetCurrency'>[],
-		labels: string[]
-	) => {
-		const dates = chartDataByDate.dates;
+	const generateTableData = useMemo(
+		() =>
+			(
+				categories: Exclude<keyof ChartData, 'currency' | 'dates' | 'datasetCurrency'>[],
+				labels: string[]
+			) => {
+				const dates = chartDataByDate.dates;
 
-		const tableData = dates.map((date, index) => {
-			let categoryValues: { [key: string]: number } = {};
+				const tableData = dates.map((date, index) => {
+					let categoryValues: { [key: string]: number } = {};
 
-			categories.forEach((category, i) => {
-				categoryValues[`y${i}`] = chartDataByDate[category][index];
-			});
+					categories.forEach((category, i) => {
+						categoryValues[`y${i}`] = chartDataByDate[category][index];
+					});
 
-			const currency = chartDataByDate.currency[index];
+					const currency = chartDataByDate.currency[index];
 
-			return { x: date, currency, ...categoryValues };
-		});
+					return { x: date, currency, ...categoryValues };
+				});
 
-		return {
-			data: tableData,
-			barData: {
-				count: categories.length,
-				categories: labels,
+				return {
+					data: tableData,
+					barData: {
+						count: categories.length,
+						categories: labels,
+					},
+				};
 			},
-		};
-	};
+		[chartDataByDate]
+	);
 
 	const { datasetCurrency } = chartDataByDate;
-
-	if (isLoading) {
-		return <div>Loading...</div>;
-	} else if (isError) {
-		return <div>Error loading financial records.</div>;
-	} else if (!data?.length) {
-		return <div>You dont have any financial records yet. Create one! 📈</div>;
-	}
 
 	return (
 		<div className="mt-12">
@@ -113,12 +106,16 @@ const Charts = ({}: ChartsProps) => {
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
 				<BarChart
+					isLoading={isLoading}
+					isError={isError}
 					title="Gross Income Year-to-Date"
 					data={generateTableData(['grossIncomeYtd'], ['Gross income YTD'])}
 					datasetCurrency={datasetCurrency}
 				/>
 
 				<BarChart
+					isLoading={isLoading}
+					isError={isError}
 					title="Taxes Paid Year-to-Date"
 					data={generateTableData(['taxesPaidYtd'], ['Taxes paid YTD'])}
 					datasetCurrency={datasetCurrency}
@@ -129,24 +126,32 @@ const Charts = ({}: ChartsProps) => {
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
 				<BarChart
+					isLoading={isLoading}
+					isError={isError}
 					title="Total cash"
 					data={generateTableData(['cash'], ['Cash'])}
 					datasetCurrency={datasetCurrency}
 				/>
 
 				<BarChart
+					isLoading={isLoading}
+					isError={isError}
 					title="Total Assets Excluding Cash"
 					data={generateTableData(['assetsExCash'], ['Assets ex cash'])}
 					datasetCurrency={datasetCurrency}
 				/>
 
 				<BarChart
+					isLoading={isLoading}
+					isError={isError}
 					title="Total Assets"
 					data={generateTableData(['totalAssets'], ['Assets'])}
 					datasetCurrency={datasetCurrency}
 				/>
 
 				<BarChart
+					isLoading={isLoading}
+					isError={isError}
 					title="Total Assets by Type"
 					data={generateTableData(['cash', 'assetsExCash'], ['Cash', 'Assets ex cash'])}
 					showLegend
@@ -156,15 +161,18 @@ const Charts = ({}: ChartsProps) => {
 
 			<ChartGroupSeperator title="Debt" />
 
-			{/* totalDebtByDate & TotalDebtToTotalAssetsByDate (ratio) & TotalDebtToNetWorthByDate (ratio) */}
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
 				<BarChart
+					isLoading={isLoading}
+					isError={isError}
 					title="Total Debt"
 					data={generateTableData(['debt'], ['Debt'])}
 					datasetCurrency={datasetCurrency}
 				/>
 
 				<BarChart
+					isLoading={isLoading}
+					isError={isError}
 					title="Total Debt / Total Assets"
 					data={generateTableData(['debtToTotalAssets'], ['Debt /  assets'])}
 					dataType="percentage"
@@ -172,6 +180,8 @@ const Charts = ({}: ChartsProps) => {
 				/>
 
 				<BarChart
+					isLoading={isLoading}
+					isError={isError}
 					title="Total Debt / Net Worth"
 					data={generateTableData(['debtToNetWorth'], ['Debt /  net worth'])}
 					dataType="percentage"
@@ -184,12 +194,16 @@ const Charts = ({}: ChartsProps) => {
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
 				<BarChart
+					isLoading={isLoading}
+					isError={isError}
 					title="Net Worth"
 					data={generateTableData(['netWorth'], ['Net worth'])}
 					datasetCurrency={datasetCurrency}
 				/>
 
 				<BarChart
+					isLoading={isLoading}
+					isError={isError}
 					title="Total Cash, Assets Excluding Cash & Debt"
 					data={generateTableData(
 						['cash', 'assetsExCash', 'debt'],

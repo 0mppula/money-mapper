@@ -1,5 +1,6 @@
 'use client';
 
+import { useWindowWidth } from '@/hooks/useWindowWidth';
 import { formatCurrency } from '@/utils/formatFns';
 import { format, monthsToQuarters } from 'date-fns';
 import { useTheme } from 'next-themes';
@@ -14,11 +15,12 @@ import {
 	YAxis,
 } from 'recharts';
 import ChartContainer from './ChartContainer';
-import { useWindowWidth } from '@/hooks/useWindowWidth';
 
 interface BarChartProps {
 	title: string;
 	showLegend?: boolean;
+	isLoading: boolean;
+	isError: boolean;
 	datasetCurrency: string;
 	dataType?: 'currency' | 'percentage';
 	data: {
@@ -38,6 +40,8 @@ const BarChart = ({
 	dataType = 'currency',
 	className,
 	showLegend = false,
+	isLoading,
+	isError,
 }: BarChartProps) => {
 	const windowWidth = useWindowWidth();
 	const { systemTheme, theme } = useTheme();
@@ -60,7 +64,14 @@ const BarChart = ({
 	};
 
 	return (
-		<ChartContainer title={title} className={className} hasLegend={showLegend}>
+		<ChartContainer
+			title={title}
+			className={className}
+			hasLegend={showLegend}
+			isLoading={isLoading}
+			isError={isError}
+			data={data.data}
+		>
 			<ResponsiveContainer width="100%" height={350}>
 				<BarChartElement data={data.data}>
 					<CartesianGrid stroke={mutedColor} vertical={false} />
