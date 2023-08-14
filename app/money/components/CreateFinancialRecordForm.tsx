@@ -35,13 +35,15 @@ import { cn } from '@/lib/utils';
 import { creationSchema } from '@/schemas/financialRecord';
 import { getPreferredCurrency } from '@/utils/localStorageFns';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { FinancialRecord } from '@prisma/client';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { getFinancialRecords } from './FinancialRecordTable';
 
 const CreateFinancialRecordForm = () => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -49,6 +51,13 @@ const CreateFinancialRecordForm = () => {
 	const { toast } = useToast();
 	const createFinancialRecordModal = useCreateFinancialRecordModal();
 	const queryClient = useQueryClient();
+
+	const { isLoading: fetchIsLoading } = useQuery<
+		(FinancialRecord & { netWorth: number; totalAssets: number })[]
+	>({
+		queryKey: ['financial-records'],
+		queryFn: getFinancialRecords,
+	});
 
 	const form = useForm<z.infer<typeof creationSchema>>({
 		resolver: zodResolver(creationSchema),
@@ -111,7 +120,7 @@ const CreateFinancialRecordForm = () => {
 				}}
 			>
 				<DialogTrigger asChild>
-					<Button>Add record</Button>
+					<Button disabled={fetchIsLoading}>Add record</Button>
 				</DialogTrigger>
 
 				<DialogContent className="max-w-2xl overflow-y-auto max-h-[calc(100vh-2rem)]">
