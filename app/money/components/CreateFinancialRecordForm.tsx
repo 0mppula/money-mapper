@@ -37,7 +37,7 @@ import { getPreferredCurrency } from '@/utils/localStorageFns';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { format, isToday } from 'date-fns';
+import { format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -102,7 +102,7 @@ const CreateFinancialRecordForm = () => {
 	});
 
 	return (
-		<div className="mt-4 lg:mt-8 flex flex-col">
+		<>
 			<Dialog
 				open={createFinancialRecordModal.isOpen}
 				onOpenChange={() => {
@@ -111,7 +111,7 @@ const CreateFinancialRecordForm = () => {
 				}}
 			>
 				<DialogTrigger asChild>
-					<Button className="place-self-end">Add record</Button>
+					<Button>Add record</Button>
 				</DialogTrigger>
 
 				<DialogContent className="max-w-2xl overflow-y-auto max-h-[calc(100vh-2rem)]">
@@ -329,7 +329,7 @@ const CreateFinancialRecordForm = () => {
 					</Form>
 				</DialogContent>
 			</Dialog>
-		</div>
+		</>
 	);
 };
 

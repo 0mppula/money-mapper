@@ -8,6 +8,7 @@ import CreateFinancialRecordForm from './components/CreateFinancialRecordForm';
 import { FinancialRecordTable } from './components/FinancialRecordTable';
 import FinancialRecordDeleteModal from '@/components/Modals/FinancialRecordDeleteModal';
 import EditFinancialRecordForm from '@/components/Modals/EditFinancialRecordForm';
+import ExportDataButton from './components/ExportDataButton';
 
 export const metadata: Metadata = {
 	title: createAppTitle('Money'),
@@ -21,7 +22,10 @@ const Page = async () => {
 
 			<FinancialRecordDeleteModal />
 
-			<CreateFinancialRecordForm />
+			<div className="mt-4 lg:mt-8 flex gap-4 justify-end">
+				<ExportDataButton />
+				<CreateFinancialRecordForm />
+			</div>
 			<EditFinancialRecordForm />
 
 			<FinancialRecordTable columns={columns} />
