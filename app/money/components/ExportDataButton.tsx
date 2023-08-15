@@ -26,7 +26,11 @@ const ExportDataButton = () => {
 		if (!canGenerateXlsx) {
 			rateLimit = setTimeout(() => {
 				setCanGenerateXlsx(true);
-			}, 1000);
+
+				toast({
+					description: 'Data exported in excel format',
+				});
+			}, 500);
 		}
 
 		return () => {
@@ -95,10 +99,6 @@ const ExportDataButton = () => {
 				toast({
 					description: 'Error exporting data to excel',
 					variant: 'destructive',
-				});
-			} finally {
-				toast({
-					description: 'Data exported in excel format',
 				});
 			}
 		});
