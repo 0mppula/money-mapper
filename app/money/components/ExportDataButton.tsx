@@ -72,7 +72,7 @@ const ExportDataButton = () => {
 								format: '0.00',
 							},
 							{
-								label: 'Debt',
+								label: 'Total Debt',
 								value: (row) => row?.debt,
 								format: '0.00',
 							},
