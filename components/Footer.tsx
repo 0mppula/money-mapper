@@ -54,7 +54,7 @@ const Footer = () => {
 			<div>
 				<span>Developed By: </span>
 				<Link
-					href="https://github.com/0mppula"
+					href="https://www.omarkraidie.com/"
 					target="_blank"
 					rel="noopener noreferrer"
 					className="active:decoration-lime-800 active:decoration-dashed dark:active:decoration-lime-400 underline"
