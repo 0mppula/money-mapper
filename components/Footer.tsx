@@ -52,7 +52,7 @@ const Footer = () => {
 			<Separator className="mb-6 mt-4 w-[min(350px,80vw)] bg-lime-800 dark:bg-lime-400  mx-auto" />
 
 			<div>
-				<span>Developed By: </span>
+				<span>Developed by </span>
 				<Link
 					href="https://www.omarkraidie.com/"
 					target="_blank"
