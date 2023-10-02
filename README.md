@@ -73,8 +73,6 @@ Running commands with npm `npm run [command]`
 | :------ | :--------------------------------------- |
 | `dev`   | Starts a development instance of the app |
 
-[Money Mapper]: https://moneymapper.vercel.app/
-
 ---
 
 ## Tech Stack
@@ -109,3 +107,5 @@ Running commands with npm `npm run [command]`
 -   **API Requests:** axios (v1.4.0)
 -   **TypeScript:** (v5.1.6)
 -   **Type Definitions:** @types/node (v20.4.5), @types/react (v18.2.18), @types/react-dom (v18.2.7)
+
+[Money Mapper]: https://moneymapper.vercel.app/
